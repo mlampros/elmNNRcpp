@@ -1,0 +1,17 @@
+ea5e09af793614843d0f3e7504abfdaa *DESCRIPTION
+9fc025572f419e1b61207ae1cbc73c7c *NAMESPACE
+d37e4171d1e3d65e2f444b2cb619ccd6 *R/elmtrain.R
+27db4a9ba416e4fb91ca59a48a287642 *R/elmtrain.default.R
+d92920f5bae8dc47cb94af00b4582106 *R/elmtrain.formula.R
+f75ffb0d4e477dd03e7056e751f53ae3 *R/hardlim.R
+2b92a38a21a46ea445baccff01e14625 *R/hardlims.R
+c379aac6f2e52a95567e910a2e108de0 *R/poslin.R
+2667a4a35d70c45af5abdb2fb116254b *R/predict.elmNN.R
+1e9e10ae6cae10f4d6f83417a5434568 *R/print.elmNN.R
+c7f2d83e57c1138327ac7dcbe2c15af1 *R/randomMatrix.R
+eace819cfdbbda4b94e9fe42e35baff9 *R/satlins.R
+7fb6bc95a2e47bf3ca608dede1aa155d *R/tribas.R
+e844971d50cbac2a4b21ba2f316a3a05 *man/elmNN-package.Rd
+31aa4f41204f4fea0b9e72664da23104 *man/elmtrain.Rd
+27834fc38e4c4699d00f576b3b9da49e *man/predict.elmNN.Rd
+67287ce3224ded806cd261587bbdf2ff *man/print.elmNN.Rd

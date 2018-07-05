@@ -1,0 +1,8 @@
+useDynLib(elmNNRcpp, .registration = TRUE)
+importFrom(Rcpp, evalCpp)
+
+import(KernelKnn)
+
+export(elm_train)
+export(elm_predict)
+export(onehot_encode)

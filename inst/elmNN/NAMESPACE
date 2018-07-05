@@ -1,0 +1,4 @@
+import(MASS)
+S3method(print,elmNN)
+S3method(predict,elmNN)
+export(elmtrain.default, elmtrain.formula, elmtrain, print.elmNN, predict.elmNN)

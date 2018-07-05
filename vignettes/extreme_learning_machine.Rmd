@@ -1,0 +1,266 @@
+---
+title: "Extreme Learning Machine"
+author: "Lampros Mouselimis"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extreme Learning Machine}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+As of 2018-06-17 the [elmNN](https://CRAN.R-project.org/package=elmNN) package was archived and due to the fact that it was one of the machine learning functions that I used when I started learning R (it returns the output results pretty fast too) plus that I had to utilize the package last week for a personal task I decided to reimplement the R code in Rcpp. It didn't take long because the R package was written, initially by the author, in a clear way. In the next lines I'll explain the differences and the functionality just for reference.
+
+<br>
+
+### Differences between the elmNN (R package) and the elmNNRcpp (Rcpp Package)
+
+* The reimplementation assumes that both the predictors ( *x* ) and the response variable ( *y* ) are in the form of a matrix. This means that *character*, *factor* or *boolean* columns have to be transformed (onehot encoded would be an option) before using either the *elm_train* or the *elm_predict* function.
+* The output predictions are in the form of a matrix. In case of regression the matrix has one column whereas in case of classification the number of columns equals the number of unique labels
+* In case of classification the unique labels should begin from 0 and the difference between the unique labels should not be greater than 1. For instance,  *unique_labels = c(0, 1, 2, 3)* are acceptable whereas the following case will raise an error : *unique_labels = c(0, 2, 3, 4)*
+* I renamed the *poslin* activation to *relu* as it's easier to remember ( both share the same properties ). Moreover I added the *leaky_relu_alpha* parameter so that if the value is greater than 0.0 a leaky-relu-activation for the single-hidden-layer can be used.
+* The initilization weights in the *elmNN* were set by default to uniform in the range [-1,1] *( 'uniform_negative' )* . I added two more options :  *'normal_gaussian' ( in the range [0,1] )* and *'uniform_positive' ( in the range [0,1] )* too
+* The user has the option to include or exclude *bias* of the one-layer feed-forward neural network
+
+<br>
+
+### The elmNNRcpp functions
+
+
+The functions included in the *elmNNRcpp* package are the following and details for each parameter can be found in the package documentation,
+
+<br>
+
+
+|    elmNNRcpp                                                                              | 
+| :------------------:                                                                      | 
+|   **elm_train**(x, y, nhid, actfun, init_weights = "normal_gaussian", bias = FALSE, ...)  | 
+|   **elm_predict**(elm_train_object, newdata, normalize = FALSE)                           | 
+|   **onehot_encode**(y)                                                                    |
+
+
+
+<br>
+
+### elmNNRcpp in case of Regression
+
+The following code chunk gives some details on how to use the *elm_train* in case of regression and compares the results with the *lm ( linear model )* base function,
+
+<br>
+
+```{r, eval=T}
+
+# load the data and split it in two parts
+#----------------------------------------
+
+data(Boston, package = 'KernelKnn')
+
+library(elmNNRcpp)
+
+Boston = as.matrix(Boston)
+dimnames(Boston) = NULL
+
+X = Boston[, -dim(Boston)[2]]
+xtr = X[1:350, ]
+xte = X[351:nrow(X), ]
+
+
+# prepare / convert the train-data-response to a one-column matrix
+#-----------------------------------------------------------------
+
+ytr = matrix(Boston[1:350, dim(Boston)[2]], nrow = length(Boston[1:350, dim(Boston)[2]]),
+             
+             ncol = 1)
+
+
+# perform a fit and predict [ elmNNRcpp ]
+#----------------------------------------
+
+fit_elm = elm_train(xtr, ytr, nhid = 1000, actfun = 'purelin',
+                    
+                    init_weights = "uniform_negative", bias = TRUE, verbose = T)
+
+pr_te_elm = elm_predict(fit_elm, xte)
+
+
+
+# perform a fit and predict [ lm ]
+#----------------------------------------
+
+data(Boston, package = 'KernelKnn')
+
+fit_lm = lm(medv~., data = Boston[1:350, ])
+
+pr_te_lm = predict(fit_lm, newdata = Boston[351:nrow(X), ])
+
+
+
+# evaluation metric
+#------------------
+
+rmse = function (y_true, y_pred) {
+  
+  out = sqrt(mean((y_true - y_pred)^2))
+  
+  out
+}
+
+
+# test data response variable
+#----------------------------
+
+yte = Boston[351:nrow(X), dim(Boston)[2]]
+
+
+# mean-squared-error for 'elm' and 'lm'
+#--------------------------------------
+
+cat('the rmse error for extreme-learning-machine is :', rmse(yte, pr_te_elm[, 1]), '\n')
+
+cat('the rmse error for liner-model is :', rmse(yte, pr_te_lm), '\n')
+
+```
+
+
+<br>
+
+### elmNNRcpp in case of Classification
+
+The following code script illustrates how *elm_train* can be used in classification and compares the results with the *glm ( Generalized Linear Models )* base function,
+
+<br>
+
+
+```{r, eval=T}
+
+
+# load the data
+#--------------
+
+data(ionosphere, package = 'KernelKnn')
+
+y_class = ionosphere[, ncol(ionosphere)]
+
+x_class = ionosphere[, -c(2, ncol(ionosphere))]     # second column has 1 unique value
+
+x_class = scale(x_class[, -ncol(x_class)])
+
+x_class = as.matrix(x_class)                        # convert to matrix
+dimnames(x_class) = NULL 
+
+
+
+# split data in train-test
+#-------------------------
+
+xtr_class = x_class[1:200, ]                    
+xte_class = x_class[201:nrow(ionosphere), ]
+
+ytr_class = as.numeric(y_class[1:200])
+yte_class = as.numeric(y_class[201:nrow(ionosphere)])
+
+ytr_class = onehot_encode(ytr_class - 1)                                     # class labels should begin from 0 (subtract 1)
+
+
+# perform a fit and predict [ elmNNRcpp ]
+#----------------------------------------
+
+fit_elm_class = elm_train(xtr_class, ytr_class, nhid = 1000, actfun = 'relu',
+                          
+                          init_weights = "uniform_negative", bias = TRUE, verbose = TRUE)
+
+pr_elm_class = elm_predict(fit_elm_class, xte_class, normalize = FALSE)
+
+pr_elm_class = max.col(pr_elm_class, ties.method = "random")
+
+
+
+# perform a fit and predict [ glm ]
+#----------------------------------------
+
+data(ionosphere, package = 'KernelKnn')
+
+fit_glm = glm(class~., data = ionosphere[1:200, -2], family = binomial(link = 'logit'))
+
+pr_glm = predict(fit_glm, newdata = ionosphere[201:nrow(ionosphere), -2], type = 'response')
+
+pr_glm = as.vector(ifelse(pr_glm < 0.5, 1, 2))
+
+
+# accuracy for 'elm' and 'glm'
+#-----------------------------
+
+cat('the accuracy for extreme-learning-machine is :', mean(yte_class == pr_elm_class), '\n')
+
+cat('the accuracy for glm is :', mean(yte_class == pr_glm), '\n')
+
+```
+
+<br>
+
+
+### Classify MNIST digits using elmNNRcpp
+
+I found an interesting [Python implementation / Code on the web](https://www.kaggle.com/robertbm/extreme-learning-machine-example) and I thought I give it a try to reproduce the results. I downloaded the MNIST data from my [Github repository](https://github.com/mlampros/DataSets) and I used the following parameter setting,
+
+
+```{r, eval = F, echo = T}
+
+
+# using system('wget..') on a linux OS 
+#-------------------------------------
+
+system("wget https://raw.githubusercontent.com/mlampros/DataSets/master/mnist.zip")             
+
+mnist <- read.table(unz("mnist.zip", "mnist.csv"), nrows = 70000, header = T, 
+                    
+                    quote = "\"", sep = ",")
+
+x = mnist[, -ncol(mnist)]
+
+y = mnist[, ncol(mnist)]
+
+y_expand = onehot_encode(y)
+
+
+
+# split the data randomly in train-test
+#--------------------------------------
+
+idx_train = sample(1:nrow(y_expand), round(0.85 * nrow(y_expand)))
+
+idx_test = setdiff(1:nrow(y_expand), idx_train)
+
+fit = elm_train(as.matrix(x[idx_train, ]), y_expand[idx_train, ], nhid = 2500, 
+                
+                actfun = 'relu', init_weights = 'uniform_negative', bias = TRUE,
+                
+                verbose = TRUE)
+
+
+# Input weights will be initialized ...
+# Dot product of input weights and data starts ...
+# Bias will be added to the dot product ...
+# 'relu' activation function will be utilized ...
+# The computation of the Moore-Pseudo-inverse starts ...
+# The computation is finished!
+# 
+# Time to complete : 1.607153 mins 
+
+
+# predictions for test-data
+#--------------------------
+
+pr_test = elm_predict(fit, newdata = as.matrix(x[idx_test, ]))
+
+pr_max_col = max.col(pr_test, ties.method = "random")
+
+y_true = max.col(y_expand[idx_test, ])
+
+
+cat('Accuracy ( Mnist data ) :', mean(pr_max_col == y_true), '\n')
+
+# Accuracy ( Mnist data ) : 96.13  
+
+```

@@ -1,0 +1,21 @@
+Package: elmNN
+Type: Package
+Title: Implementation of ELM (Extreme Learning Machine ) algorithm for
+        SLFN ( Single Hidden Layer Feedforward Neural Networks )
+Version: 1.0
+Date: 2012-07-17
+Author: Alberto Gosso
+Maintainer: Alberto Gosso <gosso.alberto@gmail.com>
+Description: Training and predict functions for SLFN ( Single
+        Hidden-layer Feedforward Neural Networks ) using the ELM
+        algorithm. ELM algorithm differs from the traditional
+        gradient-based algorithms for very short training times ( it
+        doesn't need any iterative tuning, this makes learning time
+        very fast ) and there is no need to set any other parameters
+        like learning rate, momentum, epochs, etc.
+Depends: MASS
+License: GPL (>= 2)
+Keyword: models,regression,nonlinear
+Packaged: 2012-07-18 10:02:52 UTC; gush
+Repository: CRAN
+Date/Publication: 2012-07-18 11:11:12
