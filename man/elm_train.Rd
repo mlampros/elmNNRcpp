@@ -75,4 +75,8 @@ out_class = elm_train(x_class, y_class_onehot, nhid = 20, actfun = 'relu')
 http://arma.sourceforge.net/docs.html
 
 https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse
+
+https://www.kaggle.com/robertbm/extreme-learning-machine-example
+
+http://rt.dgyblog.com/ml/ml-elm.html
 }
