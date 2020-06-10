@@ -30,7 +30,7 @@ and to download the latest version from Github use the *install_github* function
 
 ```R
 
-devtools::install_github('mlampros/elmNNRcpp')
+remotes::install_github('mlampros/elmNNRcpp')
 
 
 ```
