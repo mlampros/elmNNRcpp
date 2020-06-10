@@ -1,8 +1,8 @@
 Package: elmNNRcpp
 Type: Package
 Title: The Extreme Learning Machine Algorithm
-Version: 1.0.1
-Date: 2018-07-21
+Version: 1.0.2
+Date: 2020-06-10
 Authors@R: c( person("Lampros", "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre")), person("Alberto", "Gosso", email = "gosso.alberto@gmail.com", role = "aut") )
 BugReports: https://github.com/mlampros/elmNNRcpp/issues
 URL: https://github.com/mlampros/elmNNRcpp
@@ -18,4 +18,4 @@ Suggests: testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0

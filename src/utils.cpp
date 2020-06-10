@@ -160,46 +160,77 @@ void set_seed(int seed) {
 
 
 
-// random-uniform-matrix generation [ I can adjust the cols, rows, min-value, max-value ]
-// [ see the Armadillo documentation for more details : http://arma.sourceforge.net/docs.html ]
+// normalize the data in a pre-specified range  [ here used for the negative-uniform-distribution ]
 //
 
 // [[Rcpp::export]]
-arma::mat randomMatrix(int nCols, int nRows, double minValue, double maxValue) {
+arma::mat norm_matrix_range(arma::mat data, double min_value = -1.0, double max_value = 1.0) {
 
-  std::mt19937 engine;  // Mersenne twister random number engine
-
-  std::uniform_real_distribution<double> distr(minValue, maxValue);
-
-  arma::mat A(nRows, nCols);
-
-  A.imbue( [&]() { return distr(engine); } );
-
-  return A;
+  double MIN = data.min();
+  data = (data - MIN) / (data.max() - MIN);
+  double rng = min_value - max_value;
+  data = min_value - data * rng;
+  return data;
 }
 
 
 
-// uniform value generation for a vector
-// [ see the Armadillo documentation for more details : http://arma.sourceforge.net/docs.html ]
+// rescale the uniform distribution to [-1, 1]
+// see issue: https://github.com/mlampros/elmNNRcpp/issues/2
 //
 
 // [[Rcpp::export]]
-std::vector<double> uniform_vector(int iters, double minValue, double maxValue) {
+arma::mat uniform_negative(int nhid, int cols) {
 
-  std::mt19937 engine;  // Mersenne twister random number engine
-
-  std::uniform_real_distribution<double> distr(minValue, maxValue);
-
-  std::vector<double> res;
-
-  for (int i = 0; i < iters; i++) {
-
-    res.push_back(distr(engine));
-  }
-
-  return res;
+  arma::mat biashid = arma::randu<arma::mat>(nhid, cols);
+  biashid = norm_matrix_range(biashid, -1.0, 1.0);
+  return biashid;
 }
+
+
+
+// //-------------------------------------------------------------------------------------------------------  No effect, because I set the seed inside the 'elm_train_rcpp' function, see issue: https://github.com/mlampros/elmNNRcpp/issues/2  [ keep as a reference for negative-uniform-distribution ]
+// // random-uniform-matrix generation [ I can adjust the cols, rows, min-value, max-value ]
+// // [ see the Armadillo documentation for more details : http://arma.sourceforge.net/docs.html ]
+// //
+//
+// // [[Rcpp::export]]
+// arma::mat randomMatrix(int nCols, int nRows, double minValue, double maxValue) {
+//
+//   std::mt19937 engine;  // Mersenne twister random number engine
+//
+//   std::uniform_real_distribution<double> distr(minValue, maxValue);
+//
+//   arma::mat A(nRows, nCols);
+//
+//   A.imbue( [&]() { return distr(engine); } );
+//
+//   return A;
+// }
+//
+//
+// // uniform value generation for a vector
+// // [ see the Armadillo documentation for more details : http://arma.sourceforge.net/docs.html ]
+// //
+//
+// // [[Rcpp::export]]
+// std::vector<double> uniform_vector(int iters, double minValue, double maxValue) {
+//
+//   std::mt19937 engine;  // Mersenne twister random number engine
+//
+//   std::uniform_real_distribution<double> distr(minValue, maxValue);
+//
+//   std::vector<double> res;
+//
+//   for (int i = 0; i < iters; i++) {
+//
+//     res.push_back(distr(engine));
+//   }
+//
+//   return res;
+// }
+// //-------------------------------------------------------------------------------------------------------
+
 
 
 // switch function for activation functions
@@ -288,11 +319,11 @@ Rcpp::List elm_train_rcpp(arma::mat& x, arma::mat y, int nhid, std::string actfu
 
   else if (init_weights == "uniform_negative") {
 
-    inpweight = randomMatrix(transpose_COLS, nhid, -1.0, 1.0);
+    inpweight = uniform_negative(nhid, transpose_COLS);
 
     if (bias) {
 
-      biashid = arma::conv_to< arma::colvec >::from(uniform_vector(nhid, -1.0, 1.0));
+      biashid = arma::conv_to< arma::colvec >::from(uniform_negative(nhid, 1));
     }
   }
 

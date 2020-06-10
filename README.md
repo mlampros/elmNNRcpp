@@ -4,7 +4,8 @@
 [![codecov.io](https://codecov.io/github/mlampros/elmNNRcpp/coverage.svg?branch=master)](https://codecov.io/github/mlampros/elmNNRcpp?branch=master)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/mlampros/elmNNRcpp?branch=master&svg=true)](https://ci.appveyor.com/project/mlampros/elmNNRcpp/branch/master)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/elmNNRcpp?color=blue)](http://www.r-pkg.org/pkg/elmNNRcpp)
-
+<a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px" ></a>
+[![Dependencies](https://tinyverse.netlify.com/badge/elmNNRcpp)](https://cran.r-project.org/package=elmNNRcpp)
 
 
 ## elmNNRcpp ( Extreme Learning Machine )

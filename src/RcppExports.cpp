@@ -72,30 +72,28 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// randomMatrix
-arma::mat randomMatrix(int nCols, int nRows, double minValue, double maxValue);
-RcppExport SEXP _elmNNRcpp_randomMatrix(SEXP nColsSEXP, SEXP nRowsSEXP, SEXP minValueSEXP, SEXP maxValueSEXP) {
+// norm_matrix_range
+arma::mat norm_matrix_range(arma::mat data, double min_value, double max_value);
+RcppExport SEXP _elmNNRcpp_norm_matrix_range(SEXP dataSEXP, SEXP min_valueSEXP, SEXP max_valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type nCols(nColsSEXP);
-    Rcpp::traits::input_parameter< int >::type nRows(nRowsSEXP);
-    Rcpp::traits::input_parameter< double >::type minValue(minValueSEXP);
-    Rcpp::traits::input_parameter< double >::type maxValue(maxValueSEXP);
-    rcpp_result_gen = Rcpp::wrap(randomMatrix(nCols, nRows, minValue, maxValue));
+    Rcpp::traits::input_parameter< arma::mat >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< double >::type min_value(min_valueSEXP);
+    Rcpp::traits::input_parameter< double >::type max_value(max_valueSEXP);
+    rcpp_result_gen = Rcpp::wrap(norm_matrix_range(data, min_value, max_value));
     return rcpp_result_gen;
 END_RCPP
 }
-// uniform_vector
-std::vector<double> uniform_vector(int iters, double minValue, double maxValue);
-RcppExport SEXP _elmNNRcpp_uniform_vector(SEXP itersSEXP, SEXP minValueSEXP, SEXP maxValueSEXP) {
+// uniform_negative
+arma::mat uniform_negative(int nhid, int cols);
+RcppExport SEXP _elmNNRcpp_uniform_negative(SEXP nhidSEXP, SEXP colsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type iters(itersSEXP);
-    Rcpp::traits::input_parameter< double >::type minValue(minValueSEXP);
-    Rcpp::traits::input_parameter< double >::type maxValue(maxValueSEXP);
-    rcpp_result_gen = Rcpp::wrap(uniform_vector(iters, minValue, maxValue));
+    Rcpp::traits::input_parameter< int >::type nhid(nhidSEXP);
+    Rcpp::traits::input_parameter< int >::type cols(colsSEXP);
+    rcpp_result_gen = Rcpp::wrap(uniform_negative(nhid, cols));
     return rcpp_result_gen;
 END_RCPP
 }

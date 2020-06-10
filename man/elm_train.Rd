@@ -4,9 +4,18 @@
 \alias{elm_train}
 \title{Extreme Learning Machine training function}
 \usage{
-elm_train(x, y, nhid, actfun, init_weights = "normal_gaussian",
-  bias = FALSE, moorep_pseudoinv_tol = 0.01, leaky_relu_alpha = 0,
-  seed = 1, verbose = FALSE)
+elm_train(
+  x,
+  y,
+  nhid,
+  actfun,
+  init_weights = "normal_gaussian",
+  bias = FALSE,
+  moorep_pseudoinv_tol = 0.01,
+  leaky_relu_alpha = 0,
+  seed = 1,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{x}{a matrix. The columns of the input matrix should be of type numeric}
@@ -17,7 +26,7 @@ elm_train(x, y, nhid, actfun, init_weights = "normal_gaussian",
 
 \item{actfun}{a character string specifying the type of activation function. It should be one of the following : 'sig' \emph{( sigmoid )}, 'sin' \emph{( sine )}, 'radbas' \emph{( radial basis )}, 'hardlim' \emph{( hard-limit )}, 'hardlims' \emph{( symmetric hard-limit )}, 'satlins' \emph{( satlins )}, 'tansig' \emph{( tan-sigmoid )}, 'tribas' \emph{( triangular basis )}, 'relu' \emph{( rectifier linear unit )} or 'purelin' \emph{( linear )}}
 
-\item{init_weights}{a character string spcecifying the distribution from which the \emph{input-weights} and the \emph{bias} should be initialized. It should be one of the following : 'normal_gaussian' \emph{( in the range [0,1] )}, 'uniform_positive' \emph{( in the range [0,1] )} or 'uniform_negative' \emph{( in the range [-1,1] )}}
+\item{init_weights}{a character string spcecifying the distribution from which the \emph{input-weights} and the \emph{bias} should be initialized. It should be one of the following : 'normal_gaussian' \emph{(normal / Gaussian distribution with zero mean and unit variance)}, 'uniform_positive' \emph{( in the range [0,1] )} or 'uniform_negative' \emph{( in the range [-1,1] )}}
 
 \item{bias}{either TRUE or FALSE. If TRUE then \emph{bias} weights will be added to the hidden layer}
 
