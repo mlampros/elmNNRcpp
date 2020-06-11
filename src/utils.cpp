@@ -8,7 +8,8 @@
 #include <omp.h>
 #endif
 
-
+// RAND_MAX (used in 'uniform_negative') is a constant defined in <cstdlib> ( see: http://www.cplusplus.com/reference/cstdlib/rand/ )
+#include <cstdlib>
 
 
 // 'satlins' activation function
@@ -160,31 +161,18 @@ void set_seed(int seed) {
 
 
 
-// normalize the data in a pre-specified range  [ here used for the negative-uniform-distribution ]
-//
-
-// [[Rcpp::export]]
-arma::mat norm_matrix_range(arma::mat data, double min_value = -1.0, double max_value = 1.0) {
-
-  double MIN = data.min();
-  data = (data - MIN) / (data.max() - MIN);
-  double rng = min_value - max_value;
-  data = min_value - data * rng;
-  return data;
-}
-
-
-
-// rescale the uniform distribution to [-1, 1]
+// uniform negative [-1, 1] (see my commented out scipt below)
 // see issue: https://github.com/mlampros/elmNNRcpp/issues/2
+// slightly modified from https://stackoverflow.com/a/34757263/8302386
 //
 
 // [[Rcpp::export]]
-arma::mat uniform_negative(int nhid, int cols) {
+arma::mat uniform_negative(int n_rows, int n_cols) {
 
-  arma::mat biashid = arma::randu<arma::mat>(nhid, cols);
-  biashid = norm_matrix_range(biashid, -1.0, 1.0);
-  return biashid;
+  arma::mat res_neg = arma::randu(n_rows, n_cols);
+  res_neg *= RAND_MAX;
+  res_neg = -1.0 + res_neg / (RAND_MAX / 2.0);
+  return res_neg;
 }
 
 
