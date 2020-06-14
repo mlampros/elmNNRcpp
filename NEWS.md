@@ -1,5 +1,4 @@
 
-
 ## elmNNRcpp 1.0.2
 
 * I fixed the documentation of the *'normal_gaussian'* weights (see issue: *https://github.com/mlampros/elmNNRcpp/issues/1*)

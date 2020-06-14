@@ -2,7 +2,7 @@ Package: elmNNRcpp
 Type: Package
 Title: The Extreme Learning Machine Algorithm
 Version: 1.0.2
-Date: 2020-06-11
+Date: 2020-06-13
 Authors@R: c( person("Lampros", "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre")), person("Alberto", "Gosso", email = "gosso.alberto@gmail.com", role = "aut") )
 BugReports: https://github.com/mlampros/elmNNRcpp/issues
 URL: https://github.com/mlampros/elmNNRcpp
