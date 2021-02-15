@@ -266,9 +266,16 @@ arma::mat activation_functions(arma::mat& tempH, std::string actfun, double alph
 //
 
 // [[Rcpp::export]]
-Rcpp::List elm_train_rcpp(arma::mat& x, arma::mat y, int nhid, std::string actfun, std::string init_weights = "normal_gaussian", bool bias = false,
-
-                          double moorep_pseudoinv_tol = 0.01, double alpha = 0.0, int seed = 1, bool verbose = false) {
+Rcpp::List elm_train_rcpp(arma::mat& x, 
+                          arma::mat y, 
+                          int nhid, 
+                          std::string actfun, 
+                          std::string init_weights = "normal_gaussian", 
+                          bool bias = false,
+                          double moorep_pseudoinv_tol = 0.01, 
+                          double alpha = 0.0, 
+                          int seed = 1, 
+                          bool verbose = false) {
 
 
   if (nhid < 1) Rcpp::Rcout << "ERROR: number of hidden neurons must be >= 1" << std::endl;
