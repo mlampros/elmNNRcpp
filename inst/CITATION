@@ -1,0 +1,43 @@
+citHeader("Please cite both the package and the original articles / software in your publications:")
+
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(
+  bibtype = "Manual",
+  title   = "{elmNNRcpp}: The Extreme Learning Machine Algorithm",
+  author  = person("Lampros", "Mouselimis"),
+  year    = year,
+  note    = note,
+  url     = "https://CRAN.R-project.org/package=elmNNRcpp"
+)
+
+bibentry(
+  bibtype = "Manual",
+  title   = "{elmNN}: Implementation of ELM (Extreme Learning Machine ) algorithm for SLFN ( Single Hidden Layer Feedforward Neural Networks )",
+  author  = person("Alberto", "Gosso"),
+  year    = "2012"
+)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Extreme Learning Machine for Regression and Multiclass Classification",
+  author   = c(as.person("G.-B. Huang"), as.person("H. Zhou"), as.person("X. Ding"), as.person("R. Zhang")),
+  journal  = "IEEE Transactions on Systems, Man, and Cybernetics",
+  year     = "2011",
+  volume   = "42",
+  pages    = "513--529",
+  doi      = "10.1109/TSMCB.2011.2168604"
+)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Extreme learning machine: Theory and applications",
+  author   = c(as.person("G.-B. Huang"), as.person("Q.-Y. Zhu"), as.person("C.-K. Siew")),
+  journal  = "Neurocomputing",
+  year     = "2006",
+  volume   = "70",
+  pages    = "489--501",
+  doi      = "10.1016/j.neucom.2005.12.126"
+)
+

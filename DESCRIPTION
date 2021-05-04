@@ -1,15 +1,14 @@
 Package: elmNNRcpp
 Type: Package
 Title: The Extreme Learning Machine Algorithm
-Version: 1.0.2
-Date: 2020-06-13
-Authors@R: c( person("Lampros", "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre")), person("Alberto", "Gosso", email = "gosso.alberto@gmail.com", role = "aut") )
+Version: 1.0.3
+Date: 2021-05-03
+Authors@R: c( person(given = "Lampros", family = "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0002-8024-1546")), person(given = "Alberto", family = "Gosso", email = "gosso.alberto@gmail.com", role = "aut") )
 BugReports: https://github.com/mlampros/elmNNRcpp/issues
 URL: https://github.com/mlampros/elmNNRcpp
 Description: Training and predict functions for Single Hidden-layer Feedforward Neural Networks (SLFN) using the Extreme Learning Machine (ELM) algorithm. The ELM algorithm differs from the traditional gradient-based algorithms for very short training times (it doesn't need any iterative tuning, this makes learning time very fast) and there is no need to set any other parameters like learning rate, momentum, epochs, etc. This is a reimplementation of the 'elmNN' package using 'RcppArmadillo' after the 'elmNN' package was archived. For more information, see "Extreme learning machine: Theory and applications" by Guang-Bin Huang, Qin-Yu Zhu, Chee-Kheong Siew (2006), Elsevier B.V, <doi:10.1016/j.neucom.2005.12.126>.
 License: GPL (>= 2)
 Encoding: UTF-8
-LazyData: true
 Depends: R(>= 3.0.2), KernelKnn
 Imports: Rcpp (>= 0.12.17)
 LinkingTo: Rcpp, RcppArmadillo (>= 0.8)
@@ -18,4 +17,4 @@ Suggests: testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

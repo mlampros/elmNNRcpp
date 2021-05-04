@@ -1,4 +1,9 @@
 
+## elmNNRcpp 1.0.3
+
+* I've added the *CITATION* file in the *inst* directory listing all papers and software used in the *elmNNRcpp* package
+
+
 ## elmNNRcpp 1.0.2
 
 * I fixed the documentation of the *'normal_gaussian'* weights (see issue: *https://github.com/mlampros/elmNNRcpp/issues/1*)

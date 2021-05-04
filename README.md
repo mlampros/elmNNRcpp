@@ -40,3 +40,23 @@ Use the following link to report bugs/issues,
 
 [https://github.com/mlampros/elmNNRcpp/issues](https://github.com/mlampros/elmNNRcpp/issues)
 
+<br>
+
+### **Citation:**
+
+If you use the code of this repository in your paper or research please cite both **elmNNRcpp** and the **original articles / software** [https://cran.r-project.org/web/packages/elmNNRcpp/citation.html](https://cran.r-project.org/web/packages/elmNNRcpp/citation.html):
+
+<br>
+
+```R
+@Manual{,
+  title = {{elmNNRcpp}: The Extreme Learning Machine Algorithm},
+  author = {Lampros Mouselimis},
+  year = {2021},
+  note = {R package version 1.0.3},
+  url = {https://CRAN.R-project.org/package=elmNNRcpp},
+}
+```
+
+<br>
+
