@@ -29,11 +29,11 @@
 #' @param f formula used to specify the regression or classification.
 #' @param data data.frame with the data
 #' @return elm object which can be used with predict, residuals and fitted.
-elm <- function(f, data, nhid, actfun, init_weights = "normal_gaussian", bias = FALSE, moorep_pseudoinv_tol = 0.01,
+elm <- function(formula, data, nhid, actfun, init_weights = "normal_gaussian", bias = FALSE, moorep_pseudoinv_tol = 0.01,
                 leaky_relu_alpha = 0.0, seed = 1, verbose = FALSE){
   data <- as.data.frame(data)
-  mf <- stats::model.frame(f, data = data)
-  mm <- stats::model.matrix(f, mf)
+  mf <- stats::model.frame(formula, data = data)
+  mm <- stats::model.matrix(formula, mf)
 
   y <- mf[[1]]
 
@@ -77,7 +77,7 @@ elm <- function(f, data, nhid, actfun, init_weights = "normal_gaussian", bias = 
   colnames(fit$inpweight) <- colnames(x)
 
   if (is_regression){
-    dim(fit$outweight) <- NULL
+    #dim(fit$outweight) <- NULL
     dim(fit$predictions) <- NULL
     dim(fit$fitted_values) <- NULL
     dim(fit$residuals) <- NULL
@@ -112,10 +112,9 @@ print.elm <- function(x,...){
     cat("mse                :", mean(x$residuals^2), "\n")
   } else {
     cat("accuracy           :", mean(x$y == x$pred_class), "\n")
-    cat("\nconfusion matrix:\n")
+    cat("\nconfusion matrix :\n")
     print(table(observed=x$y, predicted = x$pred_class))
   }
-  #print(unclass(x))
 }
 
 #' @export
@@ -132,13 +131,13 @@ fitted.elm <- function(object, ...){
 #' @rdname elm
 #' @param object elm model fitted with \code{\link{elm}}.
 #' @param newdata data.frame with the new data
-#' @param type only used with classification, can be either "response", "prob", "output", 
+#' @param type only used with classification, can be either "class", "prob", "output", 
 #' which are class (vector), probability (matrix) or the output of the elm function (matrix).
 #' @param ... not used
-predict.elm <- function(object, newdata, type=c("response", "prob", "output"), ...){
+predict.elm <- function(object, newdata, type=c("class", "prob", "output"), ...){
   type <- match.arg(type)
-  if (object$is_regression && type != "response"){
-    stop("type='response' is the only valid type for regression", call. = FALSE)
+  if (object$is_regression && type != "class"){
+    warning("type is ignored for regression", call. = FALSE)
   }
   if (missing(newdata)){
     predictions <- object$predictions
@@ -151,13 +150,16 @@ predict.elm <- function(object, newdata, type=c("response", "prob", "output"), .
     mf <- stats::model.frame(object$formula, data = newdata)
     mm <- stats::model.matrix(f, mf)
     x <- mm[,-1]
-    predictions <- elm_predict(object, newdata = x, normalize = type=="prob")
+    
+    object$outweight
+    predictions <- elm_predict(unclass(object), newdata = x, normalize = (type=="prob"))
   }
   
-  if (!object$is_regression && type == "response"){
+  if (!object$is_regression && type == "class"){
     levs <- colnames(object$predictions)
     pred_class <- levs[apply(predictions, 1, which.max)]
     predictions <- factor(pred_class, levels=levs)
   }
-  predictions
+  
+  drop(predictions)
 }
