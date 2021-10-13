@@ -1,20 +1,32 @@
-#' elm model
+#' Fit an extreme learning model
 #'
-#' Formula interface for elm_train, transforms a data frame and formula
-#' into the necessary input for elm_train.
+#' Formula interface for \code{\link{elm_train}}, transforms a data frame and formula
+#' into the necessary input for elm_train, automatically calls \code{\link{onehot_encode}}
+#' for classification.
 #'
 #' @examples
 #' elm(Species ~ ., data = iris, nhid = 20, actfun="sig")
+#' 
+#' mod_elm <- elm(Species ~ ., data = iris, nhid = 20, actfun="sig")
+#' 
+#' # predict classes
+#' predict(mod_elm, newdata = iris[1:3,-5])
+#' 
+#' # predict probabilities
+#' predict(mod_elm, newdata = iris[1:3,-5], type="prob")
 #'
+#' # predict elm output
+#' predict(mod_elm, newdata = iris[1:3,-5], type="output")
+#' 
 #' data("Boston")
 #' elm(medv ~ ., data = Boston, nhid = 40, actfun="relu")
-#'
 #'
 #' data("ionosphere")
 #' elm(class ~ ., data = ionosphere, nhid=20, actfun="relu")
 #'
+#' @export
 #' @inheritParams elm_train
-#' @param f formula used to specify the regresion / classification
+#' @param f formula used to specify the regression or classification.
 #' @param data data.frame with the data
 #' @return elm object which can be used with predict, residuals and fitted.
 elm <- function(f, data, nhid, actfun, init_weights = "normal_gaussian", bias = FALSE, moorep_pseudoinv_tol = 0.01,
@@ -56,7 +68,7 @@ elm <- function(f, data, nhid, actfun, init_weights = "normal_gaussian", bias = 
 
   class(fit) <- "elm"
 
-  fit$formula <- terms(mf)
+  fit$formula <- stats::terms(mf)
   fit$call <- sys.call()
   fit$nhid <- nhid
   fit$actfun <- actfun
@@ -106,27 +118,46 @@ print.elm <- function(x,...){
   #print(unclass(x))
 }
 
+#' @export
 residuals.elm <- function(object, ...){
   object$residuals
 }
 
+#' @export
 fitted.elm <- function(object, ...){
   object$fitted_values
 }
 
-predict.elm <- function(object, newdata, normalize=FALSE, ...){
+#' @export
+#' @rdname elm
+#' @param object elm model fitted with \code{\link{elm}}.
+#' @param newdata data.frame with the new data
+#' @param type only used with classification, can be either "response", "prob", "output", 
+#' which are class (vector), probability (matrix) or the output of the elm function (matrix).
+#' @param ... not used
+predict.elm <- function(object, newdata, type=c("response", "prob", "output"), ...){
+  type <- match.arg(type)
+  if (object$is_regression && type != "response"){
+    stop("type='response' is the only valid type for regression", call. = FALSE)
+  }
   if (missing(newdata)){
     predictions <- object$predictions
   } else {
     f <- object$formula
-
+    
     y_name <- as.character(f[[2]])
-    newdata[y_name] <- 1
+    newdata[y_name] <- 1 # just a value, not used
 
     mf <- stats::model.frame(object$formula, data = newdata)
-
-    x <- as.matrix(mf[-1])
-    predictions <- elm_predict(object, newdata = x, normalize = normalize)
+    mm <- stats::model.matrix(f, mf)
+    x <- mm[,-1]
+    predictions <- elm_predict(object, newdata = x, normalize = type=="prob")
+  }
+  
+  if (!object$is_regression && type == "response"){
+    levs <- colnames(object$predictions)
+    pred_class <- levs[apply(predictions, 1, which.max)]
+    predictions <- factor(pred_class, levels=levs)
   }
   predictions
 }
