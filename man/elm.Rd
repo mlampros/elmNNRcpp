@@ -21,6 +21,8 @@ elm(
 \method{predict}{elm}(object, newdata, type = c("class", "prob", "raw"), ...)
 }
 \arguments{
+\item{formula}{formula used to specify the regression or classification.}
+
 \item{data}{data.frame with the data}
 
 \item{nhid}{a numeric value specifying the hidden neurons. Must be >= 1}
@@ -47,8 +49,6 @@ elm(
 which are class (vector), probability (matrix) or the output of the elm function (matrix).}
 
 \item{...}{not used}
-
-\item{f}{formula used to specify the regression or classification.}
 }
 \value{
 elm object which can be used with predict, residuals and fitted.

@@ -26,7 +26,7 @@
 #'
 #' @export
 #' @inheritParams elm_train
-#' @param f formula used to specify the regression or classification.
+#' @param formula formula used to specify the regression or classification.
 #' @param data data.frame with the data
 #' @return elm object which can be used with predict, residuals and fitted.
 elm <- function(formula, data, nhid, actfun, init_weights = "normal_gaussian", bias = FALSE, moorep_pseudoinv_tol = 0.01,
