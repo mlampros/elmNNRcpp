@@ -16,7 +16,7 @@
 #' predict(mod_elm, newdata = iris[1:3,-5], type="prob")
 #'
 #' # predict elm output
-#' predict(mod_elm, newdata = iris[1:3,-5], type="output")
+#' predict(mod_elm, newdata = iris[1:3,-5], type="raw")
 #' 
 #' data("Boston")
 #' elm(medv ~ ., data = Boston, nhid = 40, actfun="relu")
@@ -131,10 +131,10 @@ fitted.elm <- function(object, ...){
 #' @rdname elm
 #' @param object elm model fitted with \code{\link{elm}}.
 #' @param newdata data.frame with the new data
-#' @param type only used with classification, can be either "class", "prob", "output", 
+#' @param type only used with classification, can be either "class", "prob", "raw", 
 #' which are class (vector), probability (matrix) or the output of the elm function (matrix).
 #' @param ... not used
-predict.elm <- function(object, newdata, type=c("class", "prob", "output"), ...){
+predict.elm <- function(object, newdata, type=c("class", "prob", "raw"), ...){
   type <- match.arg(type)
   if (object$is_regression && type != "class"){
     warning("type is ignored for regression", call. = FALSE)
@@ -153,6 +153,7 @@ predict.elm <- function(object, newdata, type=c("class", "prob", "output"), ...)
     
     object$outweight
     predictions <- elm_predict(unclass(object), newdata = x, normalize = (type=="prob"))
+    colnames(predictions) <- colnames(object$predictions)
   }
   
   if (!object$is_regression && type == "class"){

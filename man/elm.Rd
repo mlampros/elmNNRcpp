@@ -6,7 +6,7 @@
 \title{Fit an extreme learning model}
 \usage{
 elm(
-  f,
+  formula,
   data,
   nhid,
   actfun,
@@ -18,11 +18,9 @@ elm(
   verbose = FALSE
 )
 
-\method{predict}{elm}(object, newdata, type = c("response", "prob", "output"), ...)
+\method{predict}{elm}(object, newdata, type = c("class", "prob", "raw"), ...)
 }
 \arguments{
-\item{f}{formula used to specify the regression or classification.}
-
 \item{data}{data.frame with the data}
 
 \item{nhid}{a numeric value specifying the hidden neurons. Must be >= 1}
@@ -45,10 +43,12 @@ elm(
 
 \item{newdata}{data.frame with the new data}
 
-\item{type}{only used with classification, can be either "response", "prob", "output", 
+\item{type}{only used with classification, can be either "class", "prob", "raw", 
 which are class (vector), probability (matrix) or the output of the elm function (matrix).}
 
 \item{...}{not used}
+
+\item{f}{formula used to specify the regression or classification.}
 }
 \value{
 elm object which can be used with predict, residuals and fitted.
@@ -70,7 +70,7 @@ predict(mod_elm, newdata = iris[1:3,-5])
 predict(mod_elm, newdata = iris[1:3,-5], type="prob")
 
 # predict elm output
-predict(mod_elm, newdata = iris[1:3,-5], type="output")
+predict(mod_elm, newdata = iris[1:3,-5], type="raw")
 
 data("Boston")
 elm(medv ~ ., data = Boston, nhid = 40, actfun="relu")
