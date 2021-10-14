@@ -52,3 +52,15 @@ test_that("elm classification works", {
   expect_equal(colnames(model$predictions), levels(ionosphere$class))
   expect_equal(colnames(model$residuals), levels(ionosphere$class))
 })
+
+test_that("elm works with binary classification", {
+  data <- data.frame(y = c(TRUE, FALSE), x = 1:2)
+  model <- elm(y ~ ., data = data, nhid=1, actfun = "sig")
+  expect_equal(model$pred_class, data$y)
+  
+  pred <- predict(model, newdata = data)
+  expect_equal(pred, model$pred_class)
+  
+  pred <- predict(model, newdata = data, type="raw")
+  expect_equal(pred, model$predictions)
+})

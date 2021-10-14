@@ -38,13 +38,17 @@ elm <- function(formula, data, nhid, actfun, init_weights = "normal_gaussian", b
   y <- mf[[1]]
 
   # TODO fix the categorical predictors...
-  x <- mm[,-1]
+  x <- mm[,-1, drop=FALSE]
 
   # regression or classification?
   is_regression <- is.numeric(y)
+  is_logical <- is.logical(y)
 
   if (is_regression){
     y <- matrix(y, ncol=1)
+  } else if (is_logical){
+    y <- matrix(as.integer(y), ncol=1)
+    levs <- NULL
   } else {
     # TODO logical
     yf <- as.factor(y)
@@ -53,7 +57,7 @@ elm <- function(formula, data, nhid, actfun, init_weights = "normal_gaussian", b
     y <- onehot_encode(as.integer(yf) - 1)
     colnames(y) <- levs
   }
-
+  
   fit <- elm_train( x = x
                   , y = y
                   , nhid = nhid
@@ -73,6 +77,7 @@ elm <- function(formula, data, nhid, actfun, init_weights = "normal_gaussian", b
   fit$nhid <- nhid
   fit$actfun <- actfun
   fit$is_regression <- is_regression
+  fit$is_logical <- is_logical
 
   colnames(fit$inpweight) <- colnames(x)
 
@@ -81,6 +86,12 @@ elm <- function(formula, data, nhid, actfun, init_weights = "normal_gaussian", b
     dim(fit$predictions) <- NULL
     dim(fit$fitted_values) <- NULL
     dim(fit$residuals) <- NULL
+  } else if (is_logical){
+    dim(fit$predictions) <- NULL
+    dim(fit$fitted_values) <- NULL
+    dim(fit$residuals) <- NULL
+    fit$pred_class <- fit$predictions >= 0.5
+    fit$y <- mf[[1]]
   } else {
     colnames(fit$outweight) <- levs
     colnames(fit$predictions) <- levs
@@ -149,18 +160,19 @@ predict.elm <- function(object, newdata, type=c("class", "prob", "raw"), ...){
 
     mf <- stats::model.frame(object$formula, data = newdata)
     mm <- stats::model.matrix(f, mf)
-    x <- mm[,-1]
+    x <- mm[,-1, drop=FALSE]
     
-    object$outweight
     predictions <- elm_predict(unclass(object), newdata = x, normalize = (type=="prob"))
     colnames(predictions) <- colnames(object$predictions)
   }
-  
-  if (!object$is_regression && type == "class"){
-    levs <- colnames(object$predictions)
-    pred_class <- levs[apply(predictions, 1, which.max)]
-    predictions <- factor(pred_class, levels=levs)
+  if (type == "class"){
+    if (object$is_logical){
+      predictions <- predictions >= 0.5
+    } else if (!object$is_regression){
+      levs <- colnames(object$predictions)
+      pred_class <- levs[apply(predictions, 1, which.max)]
+      predictions <- factor(pred_class, levels=levs)
+    }
   }
-  
   drop(predictions)
 }
