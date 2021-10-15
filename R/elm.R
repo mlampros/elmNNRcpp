@@ -138,13 +138,16 @@ fitted.elm <- function(object, ...){
   object$fitted_values
 }
 
+#' Predict with elm
+#' 
+#' Wrapper for \code{\link{elm_predict}}.
 #' @export
-#' @rdname elm
 #' @param object elm model fitted with \code{\link{elm}}.
 #' @param newdata data.frame with the new data
 #' @param type only used with classification, can be either "class", "prob", "raw", 
 #' which are class (vector), probability (matrix) or the output of the elm function (matrix).
 #' @param ... not used
+#' @return predicted values
 predict.elm <- function(object, newdata, type=c("class", "prob", "raw"), ...){
   type <- match.arg(type)
   if (object$is_regression && type != "class"){

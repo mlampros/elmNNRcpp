@@ -2,7 +2,6 @@
 % Please edit documentation in R/elm.R
 \name{elm}
 \alias{elm}
-\alias{predict.elm}
 \title{Fit an extreme learning model}
 \usage{
 elm(
@@ -17,8 +16,6 @@ elm(
   seed = 1,
   verbose = FALSE
 )
-
-\method{predict}{elm}(object, newdata, type = c("class", "prob", "raw"), ...)
 }
 \arguments{
 \item{formula}{formula used to specify the regression or classification.}
@@ -40,15 +37,6 @@ elm(
 \item{seed}{a numeric value specifying the random seed. Defaults to 1}
 
 \item{verbose}{a boolean. If TRUE then information will be printed in the console}
-
-\item{object}{elm model fitted with \code{\link{elm}}.}
-
-\item{newdata}{data.frame with the new data}
-
-\item{type}{only used with classification, can be either "class", "prob", "raw", 
-which are class (vector), probability (matrix) or the output of the elm function (matrix).}
-
-\item{...}{not used}
 }
 \value{
 elm object which can be used with predict, residuals and fitted.
