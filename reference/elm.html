@@ -199,61 +199,67 @@ for classification.</p>
     <p>elm object which can be used with predict, residuals and fitted.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>elm</span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span>, nhid <span class='op'>=</span> <span class='fl'>20</span>, actfun<span class='op'>=</span><span class='st'>"sig"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Extreme learning model, elm (classification):
-#&gt; 
-#&gt; call:  elm(Species ~ ., data = iris, nhid = 20, actfun = "sig") 
-#&gt; hidden units       : 20 
-#&gt; activation function: sig 
-#&gt; accuracy           : 0.9733333 
-#&gt; 
-#&gt; confusion matrix :
-#&gt;             predicted
-#&gt; observed     setosa versicolor virginica
-#&gt;   setosa         50          0         0
-#&gt;   versicolor      0         48         2
-#&gt;   virginica       0          2        48</div><div class='input'>
-<span class='va'>mod_elm</span> <span class='op'>&lt;-</span> <span class='fu'>elm</span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span>, nhid <span class='op'>=</span> <span class='fl'>20</span>, actfun<span class='op'>=</span><span class='st'>"sig"</span><span class='op'>)</span>
-
-<span class='co'># predict classes</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>mod_elm</span>, newdata <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] setosa setosa setosa
-#&gt; Levels: setosa versicolor virginica</div><div class='input'>
-<span class='co'># predict probabilities</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>mod_elm</span>, newdata <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span>, type<span class='op'>=</span><span class='st'>"prob"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;         setosa versicolor   virginica
-#&gt; [1,] 0.9775201 0.02021516 0.002264738
-#&gt; [2,] 0.9519374 0.02871766 0.019344988
-#&gt; [3,] 0.9620877 0.02854287 0.009369432</div><div class='input'>
-<span class='co'># predict elm output</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>mod_elm</span>, newdata <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span>, type<span class='op'>=</span><span class='st'>"raw"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;        setosa  versicolor   virginica
-#&gt; [1,] 1.018682 -0.02106638 0.002360102
-#&gt; [2,] 1.009991 -0.03046901 0.020524740
-#&gt; [3,] 1.020310 -0.03027020 0.009936443</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"Boston"</span><span class='op'>)</span>
-<span class='fu'>elm</span><span class='op'>(</span><span class='va'>medv</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>Boston</span>, nhid <span class='op'>=</span> <span class='fl'>40</span>, actfun<span class='op'>=</span><span class='st'>"relu"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Extreme learning model, elm (regression):
-#&gt; 
-#&gt; call:  elm(medv ~ ., data = Boston, nhid = 40, actfun = "relu") 
-#&gt; hidden units       : 40 
-#&gt; activation function: relu 
-#&gt; mse                : 20.20491 </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ionosphere"</span><span class='op'>)</span>
-<span class='fu'>elm</span><span class='op'>(</span><span class='va'>class</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>ionosphere</span>, nhid<span class='op'>=</span><span class='fl'>20</span>, actfun<span class='op'>=</span><span class='st'>"relu"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Extreme learning model, elm (classification):
-#&gt; 
-#&gt; call:  elm(class ~ ., data = ionosphere, nhid = 20, actfun = "relu") 
-#&gt; hidden units       : 20 
-#&gt; activation function: relu 
-#&gt; accuracy           : 0.8603989 
-#&gt; 
-#&gt; confusion matrix :
-#&gt;         predicted
-#&gt; observed   b   g
-#&gt;        b  89  37
-#&gt;        g  12 213</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>elm</span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span>, nhid <span class='op'>=</span> <span class='fl'>20</span>, actfun<span class='op'>=</span><span class='st'>"sig"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Extreme learning model, elm (classification):</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> call:  elm(Species ~ ., data = iris, nhid = 20, actfun = "sig") </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> hidden units       : 20 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> activation function: sig </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> accuracy           : 0.9733333 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> confusion matrix :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             predicted</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> observed     setosa versicolor virginica</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   setosa         50          0         0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   versicolor      0         48         2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   virginica       0          2        48</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mod_elm</span> <span class='op'>&lt;-</span> <span class='fu'>elm</span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span>, nhid <span class='op'>=</span> <span class='fl'>20</span>, actfun<span class='op'>=</span><span class='st'>"sig"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># predict classes</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>mod_elm</span>, newdata <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] setosa setosa setosa</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Levels: setosa versicolor virginica</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># predict probabilities</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>mod_elm</span>, newdata <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span>, type<span class='op'>=</span><span class='st'>"prob"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         setosa versicolor   virginica</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,] 0.9775201 0.02021516 0.002264738</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] 0.9519374 0.02871766 0.019344988</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,] 0.9620877 0.02854287 0.009369432</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># predict elm output</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>mod_elm</span>, newdata <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span>, type<span class='op'>=</span><span class='st'>"raw"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        setosa  versicolor   virginica</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,] 1.018682 -0.02106638 0.002360102</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] 1.009991 -0.03046901 0.020524740</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,] 1.020310 -0.03027020 0.009936443</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"Boston"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>elm</span><span class='op'>(</span><span class='va'>medv</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>Boston</span>, nhid <span class='op'>=</span> <span class='fl'>40</span>, actfun<span class='op'>=</span><span class='st'>"relu"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Extreme learning model, elm (regression):</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> call:  elm(medv ~ ., data = Boston, nhid = 40, actfun = "relu") </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> hidden units       : 40 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> activation function: relu </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mse                : 20.20491 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ionosphere"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>elm</span><span class='op'>(</span><span class='va'>class</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>ionosphere</span>, nhid<span class='op'>=</span><span class='fl'>20</span>, actfun<span class='op'>=</span><span class='st'>"relu"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Extreme learning model, elm (classification):</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> call:  elm(class ~ ., data = ionosphere, nhid = 20, actfun = "relu") </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> hidden units       : 20 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> activation function: relu </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> accuracy           : 0.8603989 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> confusion matrix :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         predicted</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> observed   b   g</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        b  89  37</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        g  12 213</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
