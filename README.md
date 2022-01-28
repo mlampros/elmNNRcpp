@@ -44,7 +44,7 @@ Use the following link to report bugs/issues,
 
 ### **Citation:**
 
-If you use the code of this repository in your paper or research please cite both **elmNNRcpp** and the **original articles / software** [https://cran.r-project.org/web/packages/elmNNRcpp/citation.html](https://cran.r-project.org/web/packages/elmNNRcpp/citation.html):
+If you use the code of this repository in your paper or research please cite both **elmNNRcpp** and the **original articles / software** `https://CRAN.R-project.org/package=elmNNRcpp`:
 
 <br>
 
@@ -52,8 +52,8 @@ If you use the code of this repository in your paper or research please cite bot
 @Manual{,
   title = {{elmNNRcpp}: The Extreme Learning Machine Algorithm},
   author = {Lampros Mouselimis},
-  year = {2021},
-  note = {R package version 1.0.3},
+  year = {2022},
+  note = {R package version 1.0.4},
   url = {https://CRAN.R-project.org/package=elmNNRcpp},
 }
 ```
