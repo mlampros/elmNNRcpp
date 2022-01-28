@@ -1,6 +1,3 @@
-## elmNNRcpp 1.0.3.9000
-
-* Added formula interface through function `elm`.
 
 ## elmNNRcpp 1.0.4
 
