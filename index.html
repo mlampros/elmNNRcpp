@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">elmNNRcpp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -64,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mlampros/elmNNRcpp/">
+  <a href="https://github.com/mlampros/elmNNRcpp/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -83,37 +79,37 @@
   <div class="contents col-md-9">
 
 
-<div id="elmnnrcpp--extreme-learning-machine-" class="section level2">
-<h2 class="hasAnchor">
-<a href="#elmnnrcpp--extreme-learning-machine-" class="anchor"></a>elmNNRcpp ( Extreme Learning Machine )</h2>
+<div class="section level2">
+<h2 id="elmnnrcpp--extreme-learning-machine-">elmNNRcpp ( Extreme Learning Machine )<a class="anchor" aria-label="anchor" href="#elmnnrcpp--extreme-learning-machine-"></a>
+</h2>
 <p><br></p>
-<p>The <em>elmNNRcpp</em> package is a reimplementation of <em>elmNN</em> using <em>RcppArmadillo</em> after the <a href="https://CRAN.R-project.org/package=elmNN"><em>elmNN</em> package was archived</a>. Based on the documentation of the <em>elmNN</em> it consists of, <em>“Training and predict functions for SLFN ( Single Hidden-layer Feedforward Neural Networks ) using the ELM algorithm. The ELM algorithm differs from the traditional gradient-based algorithms for very short training times ( it doesn’t need any iterative tuning, this makes learning time very fast ) and there is no need to set any other parameters like learning rate, momentum, epochs, etc.”</em>. More details can be found in the package Documentation, Vignette and <a href="http://mlampros.github.io/2018/07/05/the_extreme_learning_machine_package/">blog-post</a>. <br><br></p>
+<p>The <em>elmNNRcpp</em> package is a reimplementation of <em>elmNN</em> using <em>RcppArmadillo</em> after the <a href="https://CRAN.R-project.org/package=elmNN" class="external-link"><em>elmNN</em> package was archived</a>. Based on the documentation of the <em>elmNN</em> it consists of, <em>“Training and predict functions for SLFN ( Single Hidden-layer Feedforward Neural Networks ) using the ELM algorithm. The ELM algorithm differs from the traditional gradient-based algorithms for very short training times ( it doesn’t need any iterative tuning, this makes learning time very fast ) and there is no need to set any other parameters like learning rate, momentum, epochs, etc.”</em>. More details can be found in the package Documentation, Vignette and <a href="http://mlampros.github.io/2018/07/05/the_extreme_learning_machine_package/" class="external-link">blog-post</a>. <br><br></p>
 <p>To install the package from CRAN use,</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"elmNNRcpp"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"elmNNRcpp"</span><span class="op">)</span>
 </code></pre></div>
 <p><br></p>
 <p>and to download the latest version from Github use the <em>install_github</em> function of the devtools package, <br><br></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'mlampros/elmNNRcpp'</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'mlampros/elmNNRcpp'</span><span class="op">)</span>
 </code></pre></div>
 <p><br></p>
 <p>Use the following link to report bugs/issues, <br><br></p>
-<p><a href="https://github.com/mlampros/elmNNRcpp/issues">https://github.com/mlampros/elmNNRcpp/issues</a></p>
+<p><a href="https://github.com/mlampros/elmNNRcpp/issues" class="external-link">https://github.com/mlampros/elmNNRcpp/issues</a></p>
 <p><br></p>
-<div id="citation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#citation" class="anchor"></a><strong>Citation:</strong>
+<div class="section level3">
+<h3 id="citation">
+<strong>Citation:</strong><a class="anchor" aria-label="anchor" href="#citation"></a>
 </h3>
-<p>If you use the code of this repository in your paper or research please cite both <strong>elmNNRcpp</strong> and the <strong>original articles / software</strong> <a href="https://cran.r-project.org/web/packages/elmNNRcpp/citation.html">https://cran.r-project.org/web/packages/elmNNRcpp/citation.html</a>:</p>
+<p>If you use the code of this repository in your paper or research please cite both <strong>elmNNRcpp</strong> and the <strong>original articles / software</strong> <code>https://CRAN.R-project.org/package=elmNNRcpp</code>:</p>
 <p><br></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">@</span>Manual{,</span>
 <span id="cb3-2"><a href="#cb3-2"></a>  title =<span class="st"> </span>{{elmNNRcpp}<span class="op">:</span><span class="st"> </span>The Extreme Learning Machine Algorithm},</span>
 <span id="cb3-3"><a href="#cb3-3"></a>  author =<span class="st"> </span>{Lampros Mouselimis},</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  year =<span class="st"> </span>{<span class="dv">2021</span>},</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  note =<span class="st"> </span>{R package version <span class="dv">1</span>.<span class="fl">0.3</span>},</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  year =<span class="st"> </span>{<span class="dv">2022</span>},</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  note =<span class="st"> </span>{R package version <span class="dv">1</span>.<span class="fl">0.4</span>},</span>
 <span id="cb3-6"><a href="#cb3-6"></a>  url =<span class="st"> </span>{https<span class="op">:</span><span class="er">//</span>CRAN.R<span class="op">-</span>project.org<span class="op">/</span>package=elmNNRcpp},</span>
 <span id="cb3-7"><a href="#cb3-7"></a>}</span></code></pre></div>
 <p><br></p>
@@ -124,57 +120,62 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=elmNNRcpp">https://​cloud.r-project.org/​package=elmNNRcpp</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/mlampros/elmNNRcpp/">https://​github.com/​mlampros/​elmNNRcpp/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/mlampros/elmNNRcpp/issues">https://​github.com/​mlampros/​elmNNRcpp/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=elmNNRcpp" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/mlampros/elmNNRcpp/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mlampros/elmNNRcpp/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 2)</li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing elmNNRcpp</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Lampros Mouselimis <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/https://orcid.org/0000-0002-8024-1546" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Alberto Gosso <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html#citation">Citing elmNNRcpp</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/mlampros/elmNNRcpp/actions"><img src="https://github.com/mlampros/elmNNRcpp/workflows/tic/badge.svg?branch=master" alt="tic"></a></li>
-<li><a href="https://codecov.io/github/mlampros/elmNNRcpp?branch=master"><img src="https://codecov.io/github/mlampros/elmNNRcpp/coverage.svg?branch=master" alt="codecov.io"></a></li>
-<li><a href="http://cran.r-project.org/package=elmNNRcpp"><img src="http://www.r-pkg.org/badges/version/elmNNRcpp" alt="CRAN_Status_Badge"></a></li>
-<li><a href="http://www.r-pkg.org/pkg/elmNNRcpp"><img src="http://cranlogs.r-pkg.org/badges/grand-total/elmNNRcpp?color=blue" alt="Downloads"></a></li>
-<li><a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px"></a></li>
-<li><a href="https://cran.r-project.org/package=elmNNRcpp"><img src="https://tinyverse.netlify.com/badge/elmNNRcpp" alt="Dependencies"></a></li>
+<li>Lampros Mouselimis <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/https://orcid.org/0000-0002-8024-1546" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Alberto Gosso <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/mlampros/elmNNRcpp/actions" class="external-link"><img src="https://github.com/mlampros/elmNNRcpp/workflows/tic/badge.svg?branch=master" alt="tic"></a></li>
+<li><a href="https://codecov.io/github/mlampros/elmNNRcpp?branch=master" class="external-link"><img src="https://codecov.io/github/mlampros/elmNNRcpp/coverage.svg?branch=master" alt="codecov.io"></a></li>
+<li><a href="http://cran.r-project.org/package=elmNNRcpp" class="external-link"><img src="http://www.r-pkg.org/badges/version/elmNNRcpp" alt="CRAN_Status_Badge"></a></li>
+<li><a href="http://www.r-pkg.org/pkg/elmNNRcpp" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/elmNNRcpp?color=blue" alt="Downloads"></a></li>
+<li><a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank" class="external-link"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px"></a></li>
+<li><a href="https://cran.r-project.org/package=elmNNRcpp" class="external-link"><img src="https://tinyverse.netlify.com/badge/elmNNRcpp" alt="Dependencies"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Lampros Mouselimis, Alberto Gosso.</p>
+  <p></p>
+<p>Developed by Lampros Mouselimis, Alberto Gosso.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -182,6 +183,8 @@
 
   
 
+
+  
 
   </body>
 </html>
