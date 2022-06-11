@@ -81,24 +81,43 @@
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a matrix. The columns of the input matrix should be of type numeric</p></dd>
+
+
 <dt>y</dt>
 <dd><p>a matrix. In case of regression the matrix should have <em>n</em> rows and <em>1</em> column. In case of classification it should consist of <em>n</em> rows and <em>n</em> columns, where <em>n &gt; 1</em> and equals to the number of the unique labels.</p></dd>
+
+
 <dt>nhid</dt>
 <dd><p>a numeric value specifying the hidden neurons. Must be &gt;= 1</p></dd>
+
+
 <dt>actfun</dt>
 <dd><p>a character string specifying the type of activation function. It should be one of the following : 'sig' <em>( sigmoid )</em>, 'sin' <em>( sine )</em>, 'radbas' <em>( radial basis )</em>, 'hardlim' <em>( hard-limit )</em>, 'hardlims' <em>( symmetric hard-limit )</em>, 'satlins' <em>( satlins )</em>, 'tansig' <em>( tan-sigmoid )</em>, 'tribas' <em>( triangular basis )</em>, 'relu' <em>( rectifier linear unit )</em> or 'purelin' <em>( linear )</em></p></dd>
+
+
 <dt>init_weights</dt>
 <dd><p>a character string spcecifying the distribution from which the <em>input-weights</em> and the <em>bias</em> should be initialized. It should be one of the following : 'normal_gaussian' <em>(normal / Gaussian distribution with zero mean and unit variance)</em>, 'uniform_positive' <em>( in the range [0,1] )</em> or 'uniform_negative' <em>( in the range [-1,1] )</em></p></dd>
+
+
 <dt>bias</dt>
 <dd><p>either TRUE or FALSE. If TRUE then <em>bias</em> weights will be added to the hidden layer</p></dd>
+
+
 <dt>moorep_pseudoinv_tol</dt>
 <dd><p>a numeric value. See the references web-link for more details on <em>Moore-Penrose pseudo-inverse</em> and specifically on the <em>pseudo inverse tolerance value</em></p></dd>
+
+
 <dt>leaky_relu_alpha</dt>
 <dd><p>a numeric value between 0.0 and 1.0. If 0.0 then a simple <em>relu</em> ( f(x) = 0.0 for x &lt; 0, f(x) = x for x &gt;= 0 ) activation function will be used, otherwise a <em>leaky-relu</em> ( f(x) = alpha * x for x &lt; 0, f(x) = x for x &gt;= 0 ). It is applicable only if <em>actfun</em> equals to 'relu'</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>a numeric value specifying the random seed. Defaults to 1</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>a boolean. If TRUE then information will be printed in the console</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -162,7 +181,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
