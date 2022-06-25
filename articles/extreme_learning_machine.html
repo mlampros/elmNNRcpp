@@ -81,7 +81,7 @@
       <h1 data-toc-skip>Extreme Learning Machine</h1>
                         <h4 data-toc-skip class="author">Lampros Mouselimis</h4>
             
-            <h4 data-toc-skip class="date">2022-06-24</h4>
+            <h4 data-toc-skip class="date">2022-06-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mlampros/elmNNRcpp/blob/HEAD/vignettes/extreme_learning_machine.Rmd" class="external-link"><code>vignettes/extreme_learning_machine.Rmd</code></a></small>
       <div class="hidden name"><code>extreme_learning_machine.Rmd</code></div>
@@ -139,85 +139,85 @@
 <p>The following code chunk gives some details on how to use the <em>elm_train</em> in case of regression and compares the results with the <em>lm ( linear model )</em> base function,</p>
 <p><br></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load the data and split it in two parts</span>
-<span class="co">#----------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Boston</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mlampros/elmNNRcpp" class="external-link">elmNNRcpp</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Loading required package: KernelKnn</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># load the data and split it in two parts</span></span>
+<span><span class="co">#----------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Boston</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mlampros/elmNNRcpp" class="external-link">elmNNRcpp</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: KernelKnn</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Boston</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span> <span class="op">=</span> <span class="cn">NULL</span>
-
-<span class="va">X</span> <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-<span class="va">xtr</span> <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="op">]</span>
-<span class="va">xte</span> <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="fl">351</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="op">]</span>
-
-
-<span class="co"># prepare / convert the train-data-response to a one-column matrix</span>
-<span class="co">#-----------------------------------------------------------------</span>
-
-<span class="va">ytr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,
-             
-             ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-
-<span class="co"># perform a fit and predict [ elmNNRcpp ]</span>
-<span class="co">#----------------------------------------</span>
-
-<span class="va">fit_elm</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_train.html">elm_train</a></span><span class="op">(</span><span class="va">xtr</span>, <span class="va">ytr</span>, nhid <span class="op">=</span> <span class="fl">1000</span>, actfun <span class="op">=</span> <span class="st">'purelin'</span>,
-                    
-                    init_weights <span class="op">=</span> <span class="st">"uniform_negative"</span>, bias <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Input weights will be initialized ...</span>
-<span class="co">## Dot product of input weights and data starts ...</span>
-<span class="co">## Bias will be added to the dot product ...</span>
-<span class="co">## 'purelin' activation function will be utilized ...</span>
-<span class="co">## The computation of the Moore-Pseudo-inverse starts ...</span>
-<span class="co">## The computation is finished!</span>
-<span class="co">## </span>
-<span class="co">## Time to complete : 0.3953788 secs</span></code></pre>
+<code class="sourceCode R"><span><span class="va">Boston</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span> <span class="op">=</span> <span class="cn">NULL</span></span>
+<span></span>
+<span><span class="va">X</span> <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">xtr</span> <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="op">]</span></span>
+<span><span class="va">xte</span> <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="fl">351</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="op">]</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># prepare / convert the train-data-response to a one-column matrix</span></span>
+<span><span class="co">#-----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">ytr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>             </span>
+<span>             ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># perform a fit and predict [ elmNNRcpp ]</span></span>
+<span><span class="co">#----------------------------------------</span></span>
+<span></span>
+<span><span class="va">fit_elm</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_train.html">elm_train</a></span><span class="op">(</span><span class="va">xtr</span>, <span class="va">ytr</span>, nhid <span class="op">=</span> <span class="fl">1000</span>, actfun <span class="op">=</span> <span class="st">'purelin'</span>,</span>
+<span>                    </span>
+<span>                    init_weights <span class="op">=</span> <span class="st">"uniform_negative"</span>, bias <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Input weights will be initialized ...</span></span>
+<span><span class="co">## Dot product of input weights and data starts ...</span></span>
+<span><span class="co">## Bias will be added to the dot product ...</span></span>
+<span><span class="co">## 'purelin' activation function will be utilized ...</span></span>
+<span><span class="co">## The computation of the Moore-Pseudo-inverse starts ...</span></span>
+<span><span class="co">## The computation is finished!</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Time to complete : 0.3981771 secs</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pr_te_elm</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit_elm</span>, <span class="va">xte</span><span class="op">)</span>
-
-
-
-<span class="co"># perform a fit and predict [ lm ]</span>
-<span class="co">#----------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Boston</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span>
-
-<span class="va">fit_lm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">medv</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="op">]</span><span class="op">)</span>
-
-<span class="va">pr_te_lm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_lm</span>, newdata <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span><span class="fl">351</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span>
-
-
-
-<span class="co"># evaluation metric</span>
-<span class="co">#------------------</span>
-
-<span class="va">rmse</span> <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span> <span class="op">{</span>
-  
-  <span class="va">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">y_true</span> <span class="op">-</span> <span class="va">y_pred</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  
-  <span class="va">out</span>
-<span class="op">}</span>
-
-
-<span class="co"># test data response variable</span>
-<span class="co">#----------------------------</span>
-
-<span class="va">yte</span> <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span><span class="fl">351</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-
-
-<span class="co"># mean-squared-error for 'elm' and 'lm'</span>
-<span class="co">#--------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the rmse error for extreme-learning-machine is :'</span>, <span class="fu">rmse</span><span class="op">(</span><span class="va">yte</span>, <span class="va">pr_te_elm</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## the rmse error for extreme-learning-machine is : 23.36543</span></code></pre>
+<code class="sourceCode R"><span><span class="va">pr_te_elm</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit_elm</span>, <span class="va">xte</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># perform a fit and predict [ lm ]</span></span>
+<span><span class="co">#----------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Boston</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit_lm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">medv</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">350</span>, <span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pr_te_lm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_lm</span>, newdata <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span><span class="fl">351</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># evaluation metric</span></span>
+<span><span class="co">#------------------</span></span>
+<span></span>
+<span><span class="va">rmse</span> <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">y_true</span> <span class="op">-</span> <span class="va">y_pred</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">out</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># test data response variable</span></span>
+<span><span class="co">#----------------------------</span></span>
+<span></span>
+<span><span class="va">yte</span> <span class="op">=</span> <span class="va">Boston</span><span class="op">[</span><span class="fl">351</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Boston</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># mean-squared-error for 'elm' and 'lm'</span></span>
+<span><span class="co">#--------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the rmse error for extreme-learning-machine is :'</span>, <span class="fu">rmse</span><span class="op">(</span><span class="va">yte</span>, <span class="va">pr_te_elm</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## the rmse error for extreme-learning-machine is : 23.36543</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the rmse error for liner-model is :'</span>, <span class="fu">rmse</span><span class="op">(</span><span class="va">yte</span>, <span class="va">pr_te_lm</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## the rmse error for liner-model is : 23.36543</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the rmse error for liner-model is :'</span>, <span class="fu">rmse</span><span class="op">(</span><span class="va">yte</span>, <span class="va">pr_te_lm</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## the rmse error for liner-model is : 23.36543</span></span></code></pre>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -226,76 +226,76 @@
 <p>The following code script illustrates how <em>elm_train</em> can be used in classification and compares the results with the <em>glm ( Generalized Linear Models )</em> base function,</p>
 <p><br></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load the data</span>
-<span class="co">#--------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ionosphere</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span>
-
-<span class="va">y_class</span> <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span><span class="op">]</span>
-
-<span class="va">x_class</span> <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>     <span class="co"># second column has 1 unique value</span>
-
-<span class="va">x_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-
-<span class="va">x_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">)</span>                        <span class="co"># convert to matrix</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">)</span> <span class="op">=</span> <span class="cn">NULL</span> 
-
-
-
-<span class="co"># split data in train-test</span>
-<span class="co">#-------------------------</span>
-
-<span class="va">xtr_class</span> <span class="op">=</span> <span class="va">x_class</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>                    
-<span class="va">xte_class</span> <span class="op">=</span> <span class="va">x_class</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span>, <span class="op">]</span>
-
-<span class="va">ytr_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">y_class</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span><span class="op">]</span><span class="op">)</span>
-<span class="va">yte_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">y_class</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-
-<span class="va">ytr_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/onehot_encode.html">onehot_encode</a></span><span class="op">(</span><span class="va">ytr_class</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>                                     <span class="co"># class labels should begin from 0 (subtract 1)</span>
-
-
-<span class="co"># perform a fit and predict [ elmNNRcpp ]</span>
-<span class="co">#----------------------------------------</span>
-
-<span class="va">fit_elm_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_train.html">elm_train</a></span><span class="op">(</span><span class="va">xtr_class</span>, <span class="va">ytr_class</span>, nhid <span class="op">=</span> <span class="fl">1000</span>, actfun <span class="op">=</span> <span class="st">'relu'</span>,
-                          
-                          init_weights <span class="op">=</span> <span class="st">"uniform_negative"</span>, bias <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Input weights will be initialized ...</span>
-<span class="co">## Dot product of input weights and data starts ...</span>
-<span class="co">## Bias will be added to the dot product ...</span>
-<span class="co">## 'relu' activation function will be utilized ...</span>
-<span class="co">## The computation of the Moore-Pseudo-inverse starts ...</span>
-<span class="co">## The computation is finished!</span>
-<span class="co">## </span>
-<span class="co">## Time to complete : 0.1591909 secs</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># load the data</span></span>
+<span><span class="co">#--------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ionosphere</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">y_class</span> <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">x_class</span> <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>     <span class="co"># second column has 1 unique value</span></span>
+<span></span>
+<span><span class="va">x_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">)</span>                        <span class="co"># convert to matrix</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x_class</span><span class="op">)</span> <span class="op">=</span> <span class="cn">NULL</span> </span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># split data in train-test</span></span>
+<span><span class="co">#-------------------------</span></span>
+<span></span>
+<span><span class="va">xtr_class</span> <span class="op">=</span> <span class="va">x_class</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>                    </span>
+<span><span class="va">xte_class</span> <span class="op">=</span> <span class="va">x_class</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="va">ytr_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">y_class</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">yte_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">y_class</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ytr_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/onehot_encode.html">onehot_encode</a></span><span class="op">(</span><span class="va">ytr_class</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>                                     <span class="co"># class labels should begin from 0 (subtract 1)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># perform a fit and predict [ elmNNRcpp ]</span></span>
+<span><span class="co">#----------------------------------------</span></span>
+<span></span>
+<span><span class="va">fit_elm_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_train.html">elm_train</a></span><span class="op">(</span><span class="va">xtr_class</span>, <span class="va">ytr_class</span>, nhid <span class="op">=</span> <span class="fl">1000</span>, actfun <span class="op">=</span> <span class="st">'relu'</span>,</span>
+<span>                          </span>
+<span>                          init_weights <span class="op">=</span> <span class="st">"uniform_negative"</span>, bias <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Input weights will be initialized ...</span></span>
+<span><span class="co">## Dot product of input weights and data starts ...</span></span>
+<span><span class="co">## Bias will be added to the dot product ...</span></span>
+<span><span class="co">## 'relu' activation function will be utilized ...</span></span>
+<span><span class="co">## The computation of the Moore-Pseudo-inverse starts ...</span></span>
+<span><span class="co">## The computation is finished!</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Time to complete : 0.1570909 secs</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pr_elm_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit_elm_class</span>, <span class="va">xte_class</span>, normalize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">pr_elm_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/maxCol.html" class="external-link">max.col</a></span><span class="op">(</span><span class="va">pr_elm_class</span>, ties.method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
-
-
-
-<span class="co"># perform a fit and predict [ glm ]</span>
-<span class="co">#----------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ionosphere</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span>
-
-<span class="va">fit_glm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">class</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">'logit'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</span></code></pre>
+<code class="sourceCode R"><span><span class="va">pr_elm_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit_elm_class</span>, <span class="va">xte_class</span>, normalize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pr_elm_class</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/maxCol.html" class="external-link">max.col</a></span><span class="op">(</span><span class="va">pr_elm_class</span>, ties.method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># perform a fit and predict [ glm ]</span></span>
+<span><span class="co">#----------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ionosphere</span>, package <span class="op">=</span> <span class="st">'KernelKnn'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit_glm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">class</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">'logit'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pr_glm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_glm</span>, newdata <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'response'</span><span class="op">)</span>
-
-<span class="va">pr_glm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">pr_glm</span> <span class="op">&lt;</span> <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># accuracy for 'elm' and 'glm'</span>
-<span class="co">#-----------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the accuracy for extreme-learning-machine is :'</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">yte_class</span> <span class="op">==</span> <span class="va">pr_elm_class</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## the accuracy for extreme-learning-machine is : 0.9006623</span></code></pre>
+<code class="sourceCode R"><span><span class="va">pr_glm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit_glm</span>, newdata <span class="op">=</span> <span class="va">ionosphere</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ionosphere</span><span class="op">)</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'response'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pr_glm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">pr_glm</span> <span class="op">&lt;</span> <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># accuracy for 'elm' and 'glm'</span></span>
+<span><span class="co">#-----------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the accuracy for extreme-learning-machine is :'</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">yte_class</span> <span class="op">==</span> <span class="va">pr_elm_class</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## the accuracy for extreme-learning-machine is : 0.9006623</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the accuracy for glm is :'</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">yte_class</span> <span class="op">==</span> <span class="va">pr_glm</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## the accuracy for glm is : 0.8940397</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'the accuracy for glm is :'</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">yte_class</span> <span class="op">==</span> <span class="va">pr_glm</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## the accuracy for glm is : 0.8940397</span></span></code></pre>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -303,99 +303,99 @@
 </h3>
 <p>I found an interesting <a href="https://www.kaggle.com/robertbm/extreme-learning-machine-example" class="external-link">Python implementation / Code on the web</a> and I thought I give it a try to reproduce the results. I downloaded the MNIST data from my <a href="https://github.com/mlampros/DataSets" class="external-link">Github repository</a> and I used the following parameter setting,</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># using system('wget..') on a linux OS </span>
-<span class="co">#-------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"wget https://raw.githubusercontent.com/mlampros/DataSets/master/mnist.zip"</span><span class="op">)</span>             
-
-<span class="va">mnist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">unz</a></span><span class="op">(</span><span class="st">"mnist.zip"</span>, <span class="st">"mnist.csv"</span><span class="op">)</span>, nrows <span class="op">=</span> <span class="fl">70000</span>, header <span class="op">=</span> <span class="cn">T</span>, 
-                    
-                    quote <span class="op">=</span> <span class="st">"\""</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span>
-
-<span class="va">y</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span>
-
-<span class="co"># using system('wget..') on a linux OS </span>
-<span class="co">#-------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"wget https://raw.githubusercontent.com/mlampros/DataSets/master/mnist.zip"</span><span class="op">)</span>             
-
-<span class="va">mnist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">unz</a></span><span class="op">(</span><span class="st">"mnist.zip"</span>, <span class="st">"mnist.csv"</span><span class="op">)</span>, nrows <span class="op">=</span> <span class="fl">70000</span>, header <span class="op">=</span> <span class="cn">T</span>, 
-                    
-                    quote <span class="op">=</span> <span class="st">"\""</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span>
-
-<span class="va">y</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span> <span class="op">+</span> <span class="fl">1</span>
-
-
-<span class="co"># use the hog-features as input data</span>
-<span class="co">#-----------------------------------</span>
-
-<span class="va">hog</span> <span class="op">=</span> <span class="fu">OpenImageR</span><span class="fu">::</span><span class="fu">HOG_apply</span><span class="op">(</span><span class="va">x</span>, cells <span class="op">=</span> <span class="fl">6</span>, orientations <span class="op">=</span> <span class="fl">9</span>, rows <span class="op">=</span> <span class="fl">28</span>, columns <span class="op">=</span> <span class="fl">28</span>, threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>
-
-<span class="va">y_expand</span> <span class="op">=</span> <span class="fu">elmNNRcpp</span><span class="fu">::</span><span class="fu"><a href="../reference/onehot_encode.html">onehot_encode</a></span><span class="op">(</span><span class="va">y</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-
-
-<span class="co"># 4-fold cross-validation</span>
-<span class="co">#------------------------</span>
-
-<span class="va">folds</span> <span class="op">=</span> <span class="fu">KernelKnn</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/KernelKnn/man/class_folds.html" class="external-link">class_folds</a></span><span class="op">(</span>folds <span class="op">=</span> <span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">folds</span><span class="op">)</span>
-
-<span class="va">START</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
-
-
-<span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">folds</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'\n'</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'fold'</span>, <span class="va">x</span>, <span class="st">'starts ....'</span>, <span class="st">'\n'</span><span class="op">)</span>
-  
-  <span class="va">tmp_fit</span> <span class="op">=</span> <span class="fu">elmNNRcpp</span><span class="fu">::</span><span class="fu"><a href="../reference/elm_train.html">elm_train</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">hog</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">folds</span><span class="op">[</span><span class="op">-</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span>, <span class="va">y_expand</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">folds</span><span class="op">[</span><span class="op">-</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span>, 
-  
-                                 nhid <span class="op">=</span> <span class="fl">2500</span>, actfun <span class="op">=</span> <span class="st">'relu'</span>, init_weights <span class="op">=</span> <span class="st">'uniform_negative'</span>,
-                                 
-                                 bias <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'******************************************'</span>, <span class="st">'\n'</span><span class="op">)</span>
-  
-  <span class="va">tmp_fit</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="va">END</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">END</span> <span class="op">-</span> <span class="va">START</span>
-
-<span class="co"># Time difference of 5.698552 mins</span>
-
-
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
-
-
-<span class="co"># predictions for 4-fold cross validation</span>
-<span class="co">#----------------------------------------</span>
-
-<span class="va">test_acc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  
-  <span class="va">pr_te</span> <span class="op">=</span> <span class="fu">elmNNRcpp</span><span class="fu">::</span><span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">hog</span><span class="op">[</span><span class="va">folds</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  
-  <span class="va">pr_max_col</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/maxCol.html" class="external-link">max.col</a></span><span class="op">(</span><span class="va">pr_te</span>, ties.method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
-  
-  <span class="va">y_true</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/maxCol.html" class="external-link">max.col</a></span><span class="op">(</span><span class="va">y_expand</span><span class="op">[</span><span class="va">folds</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, <span class="op">]</span><span class="op">)</span>
-  
-  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">pr_max_col</span> <span class="op">==</span> <span class="va">y_true</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span><span class="op">)</span>
-  
-  
-
-<span class="va">test_acc</span>
-
-<span class="co"># [1] 0.9825143 0.9848571 0.9824571 0.9822857</span>
-
-
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'Accuracy ( Mnist data ) :'</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">test_acc</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span>
-
-<span class="co"># Accuracy ( Mnist data ) : 98.3</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># using system('wget..') on a linux OS </span></span>
+<span><span class="co">#-------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"wget https://raw.githubusercontent.com/mlampros/DataSets/master/mnist.zip"</span><span class="op">)</span>             </span>
+<span></span>
+<span><span class="va">mnist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">unz</a></span><span class="op">(</span><span class="st">"mnist.zip"</span>, <span class="st">"mnist.csv"</span><span class="op">)</span>, nrows <span class="op">=</span> <span class="fl">70000</span>, header <span class="op">=</span> <span class="cn">T</span>, </span>
+<span>                    </span>
+<span>                    quote <span class="op">=</span> <span class="st">"\""</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># using system('wget..') on a linux OS </span></span>
+<span><span class="co">#-------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"wget https://raw.githubusercontent.com/mlampros/DataSets/master/mnist.zip"</span><span class="op">)</span>             </span>
+<span></span>
+<span><span class="va">mnist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">unz</a></span><span class="op">(</span><span class="st">"mnist.zip"</span>, <span class="st">"mnist.csv"</span><span class="op">)</span>, nrows <span class="op">=</span> <span class="fl">70000</span>, header <span class="op">=</span> <span class="cn">T</span>, </span>
+<span>                    </span>
+<span>                    quote <span class="op">=</span> <span class="st">"\""</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="va">mnist</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mnist</span><span class="op">)</span><span class="op">]</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># use the hog-features as input data</span></span>
+<span><span class="co">#-----------------------------------</span></span>
+<span></span>
+<span><span class="va">hog</span> <span class="op">=</span> <span class="fu">OpenImageR</span><span class="fu">::</span><span class="fu">HOG_apply</span><span class="op">(</span><span class="va">x</span>, cells <span class="op">=</span> <span class="fl">6</span>, orientations <span class="op">=</span> <span class="fl">9</span>, rows <span class="op">=</span> <span class="fl">28</span>, columns <span class="op">=</span> <span class="fl">28</span>, threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">y_expand</span> <span class="op">=</span> <span class="fu">elmNNRcpp</span><span class="fu">::</span><span class="fu"><a href="../reference/onehot_encode.html">onehot_encode</a></span><span class="op">(</span><span class="va">y</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># 4-fold cross-validation</span></span>
+<span><span class="co">#------------------------</span></span>
+<span></span>
+<span><span class="va">folds</span> <span class="op">=</span> <span class="fu">KernelKnn</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/KernelKnn/man/class_folds.html" class="external-link">class_folds</a></span><span class="op">(</span>folds <span class="op">=</span> <span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">folds</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">START</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">folds</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'\n'</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'fold'</span>, <span class="va">x</span>, <span class="st">'starts ....'</span>, <span class="st">'\n'</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">tmp_fit</span> <span class="op">=</span> <span class="fu">elmNNRcpp</span><span class="fu">::</span><span class="fu"><a href="../reference/elm_train.html">elm_train</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">hog</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">folds</span><span class="op">[</span><span class="op">-</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span>, <span class="va">y_expand</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">folds</span><span class="op">[</span><span class="op">-</span><span class="va">x</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span>, </span>
+<span>  </span>
+<span>                                 nhid <span class="op">=</span> <span class="fl">2500</span>, actfun <span class="op">=</span> <span class="st">'relu'</span>, init_weights <span class="op">=</span> <span class="st">'uniform_negative'</span>,</span>
+<span>                                 </span>
+<span>                                 bias <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'******************************************'</span>, <span class="st">'\n'</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">tmp_fit</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">END</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">END</span> <span class="op">-</span> <span class="va">START</span></span>
+<span></span>
+<span><span class="co"># Time difference of 5.698552 mins</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># predictions for 4-fold cross validation</span></span>
+<span><span class="co">#----------------------------------------</span></span>
+<span></span>
+<span><span class="va">test_acc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">pr_te</span> <span class="op">=</span> <span class="fu">elmNNRcpp</span><span class="fu">::</span><span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">hog</span><span class="op">[</span><span class="va">folds</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">pr_max_col</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/maxCol.html" class="external-link">max.col</a></span><span class="op">(</span><span class="va">pr_te</span>, ties.method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">y_true</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/maxCol.html" class="external-link">max.col</a></span><span class="op">(</span><span class="va">y_expand</span><span class="op">[</span><span class="va">folds</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, <span class="op">]</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">pr_max_col</span> <span class="op">==</span> <span class="va">y_true</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  </span>
+<span></span>
+<span><span class="va">test_acc</span></span>
+<span></span>
+<span><span class="co"># [1] 0.9825143 0.9848571 0.9824571 0.9822857</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'Accuracy ( Mnist data ) :'</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">test_acc</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">'\n'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Accuracy ( Mnist data ) : 98.3</span></span></code></pre></div>
 </div>
   </div>
 
