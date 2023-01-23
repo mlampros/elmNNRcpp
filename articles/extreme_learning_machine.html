@@ -75,13 +75,14 @@
 
       
 
-      </header><script src="extreme_learning_machine_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extreme Learning Machine</h1>
-                        <h4 data-toc-skip class="author">Lampros Mouselimis</h4>
+                        <h4 data-toc-skip class="author">Lampros
+Mouselimis</h4>
             
-            <h4 data-toc-skip class="date">2022-10-19</h4>
+            <h4 data-toc-skip class="date">2023-01-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mlampros/elmNNRcpp/blob/HEAD/vignettes/extreme_learning_machine.Rmd" class="external-link"><code>vignettes/extreme_learning_machine.Rmd</code></a></small>
       <div class="hidden name"><code>extreme_learning_machine.Rmd</code></div>
@@ -90,26 +91,55 @@
 
     
     
-<p>As of 2018-06-17 the <a href="https://CRAN.R-project.org/package=elmNN" class="external-link">elmNN</a> package was archived and due to the fact that it was one of the machine learning functions that I used when I started learning R (it returns the output results pretty fast too) plus that I had to utilize the package last week for a personal task I decided to reimplement the R code in Rcpp. It didn’t take long because the R package was written, initially by the author, in a clear way. In the next lines I’ll explain the differences and the functionality just for reference.</p>
+<p>As of 2018-06-17 the <a href="https://CRAN.R-project.org/package=elmNN" class="external-link">elmNN</a> package was
+archived and due to the fact that it was one of the machine learning
+functions that I used when I started learning R (it returns the output
+results pretty fast too) plus that I had to utilize the package last
+week for a personal task I decided to reimplement the R code in Rcpp. It
+didn’t take long because the R package was written, initially by the
+author, in a clear way. In the next lines I’ll explain the differences
+and the functionality just for reference.</p>
 <p><br></p>
 <div class="section level3">
-<h3 id="differences-between-the-elmnn-r-package-and-the-elmnnrcpp-rcpp-package">Differences between the elmNN (R package) and the elmNNRcpp (Rcpp Package)<a class="anchor" aria-label="anchor" href="#differences-between-the-elmnn-r-package-and-the-elmnnrcpp-rcpp-package"></a>
+<h3 id="differences-between-the-elmnn-r-package-and-the-elmnnrcpp-rcpp-package">Differences between the elmNN (R package) and the elmNNRcpp (Rcpp
+Package)<a class="anchor" aria-label="anchor" href="#differences-between-the-elmnn-r-package-and-the-elmnnrcpp-rcpp-package"></a>
 </h3>
 <ul>
-<li>The reimplementation assumes that both the predictors ( <em>x</em> ) and the response variable ( <em>y</em> ) are in the form of a matrix. This means that <em>character</em>, <em>factor</em> or <em>boolean</em> columns have to be transformed (onehot encoded would be an option) before using either the <em>elm_train</em> or the <em>elm_predict</em> function.</li>
-<li>The output predictions are in the form of a matrix. In case of regression the matrix has one column whereas in case of classification the number of columns equals the number of unique labels</li>
-<li>In case of classification the unique labels should begin from 0 and the difference between the unique labels should not be greater than 1. For instance, <em>unique_labels = c(0, 1, 2, 3)</em> are acceptable whereas the following case will raise an error : <em>unique_labels = c(0, 2, 3, 4)</em>
+<li>The reimplementation assumes that both the predictors ( <em>x</em> )
+and the response variable ( <em>y</em> ) are in the form of a matrix.
+This means that <em>character</em>, <em>factor</em> or <em>boolean</em>
+columns have to be transformed (onehot encoded would be an option)
+before using either the <em>elm_train</em> or the <em>elm_predict</em>
+function.</li>
+<li>The output predictions are in the form of a matrix. In case of
+regression the matrix has one column whereas in case of classification
+the number of columns equals the number of unique labels</li>
+<li>In case of classification the unique labels should begin from 0 and
+the difference between the unique labels should not be greater than 1.
+For instance, <em>unique_labels = c(0, 1, 2, 3)</em> are acceptable
+whereas the following case will raise an error : <em>unique_labels =
+c(0, 2, 3, 4)</em>
 </li>
-<li>I renamed the <em>poslin</em> activation to <em>relu</em> as it’s easier to remember ( both share the same properties ). Moreover I added the <em>leaky_relu_alpha</em> parameter so that if the value is greater than 0.0 a leaky-relu-activation for the single-hidden-layer can be used.</li>
-<li>The initilization weights in the <em>elmNN</em> were set by default to uniform in the range [-1,1] <em>( ‘uniform_negative’ )</em> . I added two more options : <em>‘normal_gaussian’ ( in the range [0,1] )</em> and <em>‘uniform_positive’ ( in the range [0,1] )</em> too</li>
-<li>The user has the option to include or exclude <em>bias</em> of the one-layer feed-forward neural network</li>
+<li>I renamed the <em>poslin</em> activation to <em>relu</em> as it’s
+easier to remember ( both share the same properties ). Moreover I added
+the <em>leaky_relu_alpha</em> parameter so that if the value is greater
+than 0.0 a leaky-relu-activation for the single-hidden-layer can be
+used.</li>
+<li>The initilization weights in the <em>elmNN</em> were set by default
+to uniform in the range [-1,1] <em>( ‘uniform_negative’ )</em> . I added
+two more options : <em>‘normal_gaussian’ ( in the range [0,1] )</em> and
+<em>‘uniform_positive’ ( in the range [0,1] )</em> too</li>
+<li>The user has the option to include or exclude <em>bias</em> of the
+one-layer feed-forward neural network</li>
 </ul>
 <p><br></p>
 </div>
 <div class="section level3">
 <h3 id="the-elmnnrcpp-functions">The elmNNRcpp functions<a class="anchor" aria-label="anchor" href="#the-elmnnrcpp-functions"></a>
 </h3>
-<p>The functions included in the <em>elmNNRcpp</em> package are the following and details for each parameter can be found in the package documentation,</p>
+<p>The functions included in the <em>elmNNRcpp</em> package are the
+following and details for each parameter can be found in the package
+documentation,</p>
 <p><br></p>
 <table class="table">
 <colgroup><col width="100%"></colgroup>
@@ -119,11 +149,13 @@
 <tbody>
 <tr class="odd">
 <td align="center">
-<strong>elm_train</strong>(x, y, nhid, actfun, init_weights = “normal_gaussian”, bias = FALSE, …)</td>
+<strong>elm_train</strong>(x, y, nhid, actfun,
+init_weights = “normal_gaussian”, bias = FALSE, …)</td>
 </tr>
 <tr class="even">
 <td align="center">
-<strong>elm_predict</strong>(elm_train_object, newdata, normalize = FALSE)</td>
+<strong>elm_predict</strong>(elm_train_object,
+newdata, normalize = FALSE)</td>
 </tr>
 <tr class="odd">
 <td align="center">
@@ -136,7 +168,9 @@
 <div class="section level3">
 <h3 id="elmnnrcpp-in-case-of-regression">elmNNRcpp in case of Regression<a class="anchor" aria-label="anchor" href="#elmnnrcpp-in-case-of-regression"></a>
 </h3>
-<p>The following code chunk gives some details on how to use the <em>elm_train</em> in case of regression and compares the results with the <em>lm ( linear model )</em> base function,</p>
+<p>The following code chunk gives some details on how to use the
+<em>elm_train</em> in case of regression and compares the results with
+the <em>lm ( linear model )</em> base function,</p>
 <p><br></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the data and split it in two parts</span></span>
@@ -176,7 +210,7 @@
 <span><span class="co">## The computation of the Moore-Pseudo-inverse starts ...</span></span>
 <span><span class="co">## The computation is finished!</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Time to complete : 0.4760818 secs</span></span></code></pre>
+<span><span class="co">## Time to complete : 0.4362111 secs</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr_te_elm</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit_elm</span>, <span class="va">xte</span><span class="op">)</span></span>
 <span></span>
@@ -223,7 +257,9 @@
 <div class="section level3">
 <h3 id="elmnnrcpp-in-case-of-classification">elmNNRcpp in case of Classification<a class="anchor" aria-label="anchor" href="#elmnnrcpp-in-case-of-classification"></a>
 </h3>
-<p>The following code script illustrates how <em>elm_train</em> can be used in classification and compares the results with the <em>glm ( Generalized Linear Models )</em> base function,</p>
+<p>The following code script illustrates how <em>elm_train</em> can be
+used in classification and compares the results with the <em>glm (
+Generalized Linear Models )</em> base function,</p>
 <p><br></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the data</span></span>
@@ -267,7 +303,7 @@
 <span><span class="co">## The computation of the Moore-Pseudo-inverse starts ...</span></span>
 <span><span class="co">## The computation is finished!</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Time to complete : 0.191947 secs</span></span></code></pre>
+<span><span class="co">## Time to complete : 0.170969 secs</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr_elm_class</span> <span class="op">=</span> <span class="fu"><a href="../reference/elm_predict.html">elm_predict</a></span><span class="op">(</span><span class="va">fit_elm_class</span>, <span class="va">xte_class</span>, normalize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -301,7 +337,10 @@
 <div class="section level3">
 <h3 id="classify-mnist-digits-using-elmnnrcpp">Classify MNIST digits using elmNNRcpp<a class="anchor" aria-label="anchor" href="#classify-mnist-digits-using-elmnnrcpp"></a>
 </h3>
-<p>I found an interesting <a href="https://www.kaggle.com/robertbm/extreme-learning-machine-example" class="external-link">Python implementation / Code on the web</a> and I thought I give it a try to reproduce the results. I downloaded the MNIST data from my <a href="https://github.com/mlampros/DataSets" class="external-link">Github repository</a> and I used the following parameter setting,</p>
+<p>I found an interesting <a href="https://www.kaggle.com/robertbm/extreme-learning-machine-example" class="external-link">Python
+implementation / Code on the web</a> and I thought I give it a try to
+reproduce the results. I downloaded the MNIST data from my <a href="https://github.com/mlampros/DataSets" class="external-link">Github repository</a> and I
+used the following parameter setting,</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using system('wget..') on a linux OS </span></span>
 <span><span class="co">#-------------------------------------</span></span>
@@ -414,7 +453,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
