@@ -1,11 +1,11 @@
 Package: elmNNRcpp
 Type: Package
 Title: The Extreme Learning Machine Algorithm
-Version: 1.0.4
-Date: 2022-01-27
-Authors@R: c( person(given = "Lampros", family = "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0002-8024-1546")), person(given = "Alberto", family = "Gosso", email = "gosso.alberto@gmail.com", role = "aut"), person(given = "Edwin", family = "de Jonge", email = "edwindjonge@gmail.com", role = "ctb", comment = c(ORCID = "https://orcid.org/0000-0002-6580-4718", Github = "Github Contributor")) )
+Version: 1.0.5
+Date: 2025-09-15
+Authors@R: c( person(given = "Lampros", family = "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-8024-1546")), person(given = "Alberto", family = "Gosso", email = "gosso.alberto@gmail.com", role = "aut"), person(given = "Edwin", family = "de Jonge", email = "edwindjonge@gmail.com", role = "ctb", comment = c(ORCID = "0000-0002-6580-4718", comment = "Github Contributor")) )
 BugReports: https://github.com/mlampros/elmNNRcpp/issues
-URL: https://github.com/mlampros/elmNNRcpp
+URL: https://github.com/mlampros/elmNNRcpp, https://mlampros.github.io/elmNNRcpp/
 Description: Training and predict functions for Single Hidden-layer Feedforward Neural Networks (SLFN) using the Extreme Learning Machine (ELM) algorithm. The ELM algorithm differs from the traditional gradient-based algorithms for very short training times (it doesn't need any iterative tuning, this makes learning time very fast) and there is no need to set any other parameters like learning rate, momentum, epochs, etc. This is a reimplementation of the 'elmNN' package using 'RcppArmadillo' after the 'elmNN' package was archived. For more information, see "Extreme learning machine: Theory and applications" by Guang-Bin Huang, Qin-Yu Zhu, Chee-Kheong Siew (2006), Elsevier B.V, <doi:10.1016/j.neucom.2005.12.126>.
 License: GPL (>= 2)
 Encoding: UTF-8
@@ -17,4 +17,4 @@ Suggests: testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2

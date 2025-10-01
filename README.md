@@ -1,10 +1,8 @@
 
-[![tic](https://github.com/mlampros/elmNNRcpp/workflows/tic/badge.svg?branch=master)](https://github.com/mlampros/elmNNRcpp/actions)
-[![codecov.io](https://codecov.io/github/mlampros/elmNNRcpp/coverage.svg?branch=master)](https://codecov.io/github/mlampros/elmNNRcpp?branch=master)
+[![R-CMD-check](https://github.com/mlampros/elmNNRcpp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mlampros/elmNNRcpp/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/elmNNRcpp)](http://cran.r-project.org/package=elmNNRcpp)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/elmNNRcpp?color=blue)](http://www.r-pkg.org/pkg/elmNNRcpp)
-<a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px" ></a>
-[![Dependencies](https://tinyverse.netlify.com/badge/elmNNRcpp)](https://cran.r-project.org/package=elmNNRcpp)
+[![status](https://tinyverse.netlify.app/badge/elmNNRcpp)](https://CRAN.R-project.org/package=elmNNRcpp)
 
 
 ## elmNNRcpp ( Extreme Learning Machine )
@@ -24,12 +22,13 @@ install.packages("elmNNRcpp")
 ```
 <br>
 
-and to download the latest version from Github use the *install_github* function of the devtools package,
-<br><br>
+or download the latest version from Github using the *pak* package,
+
+<br>
 
 ```R
 
-remotes::install_github('mlampros/elmNNRcpp')
+pak::pak('mlampros/elmNNRcpp')
 
 
 ```
@@ -52,8 +51,8 @@ If you use the code of this repository in your paper or research please cite bot
 @Manual{,
   title = {{elmNNRcpp}: The Extreme Learning Machine Algorithm},
   author = {Lampros Mouselimis},
-  year = {2022},
-  note = {R package version 1.0.4},
+  year = {2025},
+  note = {R package version 1.0.5},
   url = {https://CRAN.R-project.org/package=elmNNRcpp},
 }
 ```
